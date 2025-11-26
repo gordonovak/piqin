@@ -32,6 +32,7 @@ public:
 
 	// Allows us to return our object list
 	std::unordered_map<int, Object*>& get_objList();
+	std::vector<Object*> z_sorted_objList();
 
 	std::string to_string();
 

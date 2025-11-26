@@ -71,7 +71,7 @@ var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIR
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpeirkey50.js
+// include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpom62t5ph.js
 
   if (!Module['expectedDataFileDownloads']) Module['expectedDataFileDownloads'] = 0;
   Module['expectedDataFileDownloads']++;
@@ -204,14 +204,14 @@ Module['FS_createPath']("/", "assets", true, true);
 
   })();
 
-// end include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpeirkey50.js
-// include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpznt2dw36.js
+// end include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpom62t5ph.js
+// include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpadz1g8nb.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if ((typeof ENVIRONMENT_IS_WASM_WORKER != 'undefined' && ENVIRONMENT_IS_WASM_WORKER) || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD) || (typeof ENVIRONMENT_IS_AUDIO_WORKLET != 'undefined' && ENVIRONMENT_IS_AUDIO_WORKLET)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpznt2dw36.js
+  // end include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpadz1g8nb.js
 // include: /Users/gordie/emsdk/upstream/emscripten/src/emrun_prejs.js
 /**
  * @license
@@ -234,13 +234,13 @@ if (globalThis.window) {
   }
 }
 // end include: /Users/gordie/emsdk/upstream/emscripten/src/emrun_prejs.js
-// include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpbb6tclur.js
+// include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmph9wgbs_e.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmpbb6tclur.js
+  // end include: /var/folders/rm/hj_cdjp17xjcbpkc4gpcycnc0000gn/T/tmph9wgbs_e.js
 
 
 var arguments_ = [];

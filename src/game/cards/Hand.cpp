@@ -3,23 +3,25 @@
 #include <iostream>
 #include <ostream>
 
-#include "ObjectManager.hpp" `
+#include "ObjectManager.hpp"
 #include "input/InputConstants.hpp"
 
 Hand::Hand() {
     cards.resize(MAX_HAND_SIZE);
     targetCard = 0;
 
-    // Setting up pointer
+    // Setting up the little selector
     card_selector = new Object({30,30,30});
     card_selector->set_sheet_id(ASSET_CARD_SELECTOR_ID);
     card_selector->set_width(8);
     card_selector->set_height(8);
     card_selector->set_scale(1);
+    card_selector->set_z_index(HAND_Z_BASE+0.6f);
 }
 
 bool Hand::add_card(Card* c) {
     if (numCards <= MAX_HAND_SIZE) {
+        c->set_z_index(HAND_Z_BASE+numCards/(MAX_HAND_SIZE*2.0f));
         cards[numCards++] = c;
         update_cards(true);
     }
@@ -36,14 +38,26 @@ bool Hand::remove_card(uint8_t value, char suite) {
             numCards--;
             if (targetCard >= numCards)
                 targetCard--;
+            update_cards(true);
             return true;
         }
     }
     return false;
 }
 
-#define HAND_DEFAULT_SPEED 1.0f
-Path Hand::get_card_path(int index, bool selected, int& center, int& height, Vertex mod) {
+bool Hand::remove_card(uint8_t cardNum) {
+    if (cardNum < numCards) {
+        cards.erase(cards.begin()+cardNum);
+        numCards--;
+        if (targetCard >= numCards)
+            targetCard--;
+        update_cards(true);
+        return true;
+    }
+    return false;
+}
+
+Path Hand::get_card_path(int index, bool selected, int& center, int& height, float speed, Vertex mod) {
     int flay = (is_held(INPUT_MODIFY)) ? (20) : 0;
     Path p = {
         {
@@ -55,7 +69,7 @@ Path Hand::get_card_path(int index, bool selected, int& center, int& height, Ver
         },
         cards[index]->pos(),
         PATH_BALLOON,
-        HAND_DEFAULT_SPEED
+        speed
     };
     return p;
 }
@@ -63,22 +77,24 @@ Path Hand::get_card_path(int index, bool selected, int& center, int& height, Ver
 void Hand::update_cards(bool force) {
     int center = scene::width/2;
     int height = 3*scene::height/4;
-    if (flayed != is_held(INPUT_MODIFY) || force) {
+    if (numCards == 0)
+        card_selector->hidden = true;
+    else if (flayed != is_held(INPUT_MODIFY) || force) {
         for (int i = 0; i < numCards; i++)
             cards[i]->set_path(get_card_path(i, i == targetCard, center, height));
         flayed = is_held(INPUT_MODIFY);
         card_selector->set_state(!flayed);
         if (!flayed)
-            card_selector->set_path(get_card_path(targetCard,true, center, height, Vertex(0,15,0)));
+            card_selector->set_path(get_card_path(targetCard,true, center, height, HAND_DEFAULT_SPEED, Vertex(0,15,0)));
         else
-            card_selector->set_path(get_card_path(targetCard,true, center, height, Vertex(0,10,0)));
+            card_selector->set_path(get_card_path(targetCard,true, center, height,HAND_DEFAULT_SPEED , Vertex(0,10,0)));
     }
     else if (targetCard != oldTarget) {
         // Push the cards up/ down if they're selected or not
-        cards[targetCard]->frame_state()->state++;
-        cards[targetCard]->set_path(get_card_path(targetCard, true, center, height));
-        cards[oldTarget]->set_path(get_card_path(oldTarget, false, center, height));
-        card_selector->set_path(get_card_path(targetCard,true, center, height, Vertex(0,10,0)));
+        cards[targetCard]->set_path(get_card_path(targetCard, true, center, height, 0.125));
+        cards[oldTarget]->set_path(get_card_path(oldTarget, false, center, height, 0.125));
+        // Update our pointer accordingly
+        card_selector->set_path(get_card_path(targetCard,true, center, height,0.125, Vertex(0,10,0)));
     }
     oldTarget = targetCard;
 }

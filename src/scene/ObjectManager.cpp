@@ -68,6 +68,17 @@ std::unordered_map<int, Object*>& ObjectManager::get_objList() {
 	return objList;
 }
 
+std::vector<Object *> ObjectManager::z_sorted_objList() {
+	std::vector<Object*> ret;
+	ret.reserve(objList.size());
+	for (auto& [id, o]: objList)
+		ret.emplace_back(o);
+	std::sort(ret.begin(), ret.end(), [](Object* a, Object* b) {
+		return a->get_z_index() < b->get_z_index();
+	});
+	return ret;
+}
+
 std::string ObjectManager::to_string() {
 	string ret;
 	ret += "Printing ObjectManager: ";

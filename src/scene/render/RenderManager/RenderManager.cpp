@@ -43,8 +43,6 @@ void RenderManager::render() {
 	// ><><><><><>< BIG PHASE ><><><><><><
 	render_objects();
 	// ><><><><><>< BIG PHASE ><><><><><><
-
-	std::cerr << SDL_GetError() << std::endl;
 	/* Now we scale up our texture in accordance with the gamera */
 }
 
@@ -113,7 +111,7 @@ void RenderManager::render_objects() {
 	std::unordered_map<int, std::vector<TextureRenderInfo*>> flats;
 	std::vector<TextureRenderInfo>verticals;
 	// Iterate through each of our objects
-	for (auto& [id, o]: engine::om->get_objList()) {
+	for (auto& o: engine::om->z_sorted_objList()){
 		// If an object is hidden we don't display it.
 		if (o->hidden)
 			continue;

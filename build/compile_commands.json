@@ -124,5 +124,11 @@
   "command": "/Users/gordie/emsdk/upstream/emscripten/emcc -I/Users/gordie/game/include -I/Users/gordie/game/include/scene -I/Users/gordie/game/src/scene -g -fcolor-diagnostics -sUSE_SDL=2 -o CMakeFiles/norton.dir/src/utilities/zstd/zstd.c.o -c /Users/gordie/game/src/utilities/zstd/zstd.c",
   "file": "/Users/gordie/game/src/utilities/zstd/zstd.c",
   "output": "CMakeFiles/norton.dir/src/utilities/zstd/zstd.c.o"
+},
+{
+  "directory": "/Users/gordie/game/build",
+  "command": "/Users/gordie/emsdk/upstream/emscripten/em++ -I/Users/gordie/game/include -I/Users/gordie/game/include/scene -I/Users/gordie/game/src/scene -g -std=gnu++17 -fcolor-diagnostics -sUSE_SDL=2 -o CMakeFiles/norton.dir/src/game/cards/Card.cpp.o -c /Users/gordie/game/src/game/cards/Card.cpp",
+  "file": "/Users/gordie/game/src/game/cards/Card.cpp",
+  "output": "CMakeFiles/norton.dir/src/game/cards/Card.cpp.o"
 }
 ]

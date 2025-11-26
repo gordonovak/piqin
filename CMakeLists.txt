@@ -37,6 +37,8 @@ add_executable(norton
         src/utilities/Utilities.cpp
         src/utilities/basisu_transcoder/basisu_transcoder.cpp
         src/utilities/zstd/zstd.c
+        src/game/cards/Card.cpp
+        src/game/cards/Card.hpp
 )
 
 target_include_directories(norton PRIVATE

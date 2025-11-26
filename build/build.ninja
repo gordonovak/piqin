@@ -217,6 +217,14 @@ build CMakeFiles/norton.dir/src/utilities/zstd/zstd.c.o: C_COMPILER__norton_unsc
   OBJECT_DIR = CMakeFiles/norton.dir
   OBJECT_FILE_DIR = CMakeFiles/norton.dir/src/utilities/zstd
 
+build CMakeFiles/norton.dir/src/game/cards/Card.cpp.o: CXX_COMPILER__norton_unscanned_Debug /Users/gordie/game/src/game/cards/Card.cpp || cmake_object_order_depends_target_norton
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/norton.dir/src/game/cards/Card.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fcolor-diagnostics -sUSE_SDL=2
+  INCLUDES = -I/Users/gordie/game/include -I/Users/gordie/game/include/scene -I/Users/gordie/game/src/scene
+  OBJECT_DIR = CMakeFiles/norton.dir
+  OBJECT_FILE_DIR = CMakeFiles/norton.dir/src/game/cards
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target norton
@@ -225,7 +233,7 @@ build CMakeFiles/norton.dir/src/utilities/zstd/zstd.c.o: C_COMPILER__norton_unsc
 #############################################
 # Link the executable norton.html
 
-build norton.html: CXX_EXECUTABLE_LINKER__norton_Debug CMakeFiles/norton.dir/src/main.cpp.o CMakeFiles/norton.dir/src/generics/Vertex.cpp.o CMakeFiles/norton.dir/src/generics/Path.cpp.o CMakeFiles/norton.dir/src/generics/Object.cpp.o CMakeFiles/norton.dir/src/input/InputManager.cpp.o CMakeFiles/norton.dir/src/game/GameMaster.cpp.o CMakeFiles/norton.dir/src/game/cards/Hand.cpp.o CMakeFiles/norton.dir/src/scene/ObjectManager.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/RenderManager.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/dst-rects.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/Render-fv.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/canvas.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/Shadows.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/Render_Rect.cpp.o CMakeFiles/norton.dir/src/scene/render/Background.cpp.o CMakeFiles/norton.dir/src/scene/textures/SpriteSheet.cpp.o CMakeFiles/norton.dir/src/scene/textures/SheetManager.cpp.o CMakeFiles/norton.dir/src/utilities/BasisDecoder.cpp.o CMakeFiles/norton.dir/src/utilities/Utilities.cpp.o CMakeFiles/norton.dir/src/utilities/basisu_transcoder/basisu_transcoder.cpp.o CMakeFiles/norton.dir/src/utilities/zstd/zstd.c.o
+build norton.html: CXX_EXECUTABLE_LINKER__norton_Debug CMakeFiles/norton.dir/src/main.cpp.o CMakeFiles/norton.dir/src/generics/Vertex.cpp.o CMakeFiles/norton.dir/src/generics/Path.cpp.o CMakeFiles/norton.dir/src/generics/Object.cpp.o CMakeFiles/norton.dir/src/input/InputManager.cpp.o CMakeFiles/norton.dir/src/game/GameMaster.cpp.o CMakeFiles/norton.dir/src/game/cards/Hand.cpp.o CMakeFiles/norton.dir/src/scene/ObjectManager.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/RenderManager.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/dst-rects.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/Render-fv.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/canvas.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/Shadows.cpp.o CMakeFiles/norton.dir/src/scene/render/RenderManager/Render_Rect.cpp.o CMakeFiles/norton.dir/src/scene/render/Background.cpp.o CMakeFiles/norton.dir/src/scene/textures/SpriteSheet.cpp.o CMakeFiles/norton.dir/src/scene/textures/SheetManager.cpp.o CMakeFiles/norton.dir/src/utilities/BasisDecoder.cpp.o CMakeFiles/norton.dir/src/utilities/Utilities.cpp.o CMakeFiles/norton.dir/src/utilities/basisu_transcoder/basisu_transcoder.cpp.o CMakeFiles/norton.dir/src/utilities/zstd/zstd.c.o CMakeFiles/norton.dir/src/game/cards/Card.cpp.o
   CONFIG = Debug
   FLAGS = -g
   LINK_FLAGS = -sUSE_SDL=2 --shell-file=/Users/gordie/game/assets/game_shell.html --preload-file=assets --emrun -sASSERTIONS=2 -sMAXIMUM_MEMORY=64MB -sALLOW_MEMORY_GROWTH
