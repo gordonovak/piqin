@@ -30,31 +30,33 @@ bool Hand::add_card(Card* c) {
     return true;
 }
 
-bool Hand::remove_card(uint8_t value, char suite) {
+Card* Hand::pop_card(uint8_t value, char suite) {
     Card c = {value, suite};
     for (int i = 0; i < numCards; i++) {
         if (*(cards[i])== c) {
+            Card* ret = cards[i];
             cards.erase(cards.begin() + i);
             numCards--;
             if (targetCard >= numCards)
                 targetCard--;
             update_cards(true);
-            return true;
+            return ret;
         }
     }
-    return false;
+    return nullptr;
 }
 
-bool Hand::remove_card(uint8_t cardNum) {
+Card* Hand::pop_card(uint8_t cardNum) {
     if (cardNum < numCards) {
+        Card* ret = cards[cardNum];
         cards.erase(cards.begin()+cardNum);
         numCards--;
         if (targetCard >= numCards)
             targetCard--;
         update_cards(true);
-        return true;
+        return ret;
     }
-    return false;
+    return nullptr;
 }
 
 Path Hand::get_card_path(int index, bool selected, int& center, int& height, float speed, Vertex mod) {
@@ -113,6 +115,6 @@ bool Hand::getPress(short keybind) {
     return true;
 }
 
-Object* Hand::get_pointer() const {
+Object* Hand::get_selector() const {
     return card_selector;
 }

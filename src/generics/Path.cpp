@@ -64,21 +64,23 @@ void Path::balloon(Vertex &pos)
         complete |= PATH_COMPLETE_Y;
     if (~(complete & PATH_COMPLETE_Z) && overshoot(pos.z, target.z, dist[2]))
         complete |= PATH_COMPLETE_Z;
+    // If we're reached all paths, (complete == PATH_COMPLETE)
 }
 
 // Defines the equation of motion for a torpedo-ish movement
 #define PATH_TORPEDO_EQ(U, DIST) (U * (scene::dt * speed * (1.0f/DIST) * PATH_TORPEDO_AMPLIFY))
 void Path::torpedo(Vertex &pos) {
-    // Very similar to the balloon code
-    // Gets the direction we have to move via. the unit vector
-    const Vertex unit = (target - pos).unit();
-    // Now we get the distance between our target and position
+    //calculate our unit vector
+    Vertex unit = (target - pos).unit();
     Vertex dist = PATH_TORPEDO_EQ(unit, target.dist(pos));
-    // If one of them reaches the finish, all of them should hopefully
-    // However, we must check that each of our travel distances are greater than 1
-    if (abs(dist[0]) < 1) dist[0] = utils::sgn(dist[0]);
-    if (abs(dist[1]) < 1) dist[1] = utils::sgn(dist[1]);
-    if (abs(dist[2]) < 1) dist[2] = utils::sgn(dist[2]);
+    //minimum step of movement
+    const float minStep = 0.0025f * target.dist(pos);
+    // This way we can preserve minimum stepping
+    for (int i = 0; i < 3; ++i) {
+        if (fabs(dist[i]) < minStep) {
+            dist[i] = (unit.x >= 0.0f ? minStep : -minStep);
+        }
+    }
     // Then we check if we overshoot or whether we're done or not!
     if (~(complete & PATH_COMPLETE_X) && overshoot(pos.x, target.x, dist[0]))
         complete |= PATH_COMPLETE_X;
@@ -89,7 +91,7 @@ void Path::torpedo(Vertex &pos) {
     // If we're reached all paths, (complete == PATH_COMPLETE)
 }
 
-// Lets us tell if given our movement, if we're
+// Lets us tell if given our movement, if we've overshot
 bool Path::overshoot(double &o, double& t, double dist) const {
     const double newpos = o + dist;
     if ((dist > 0 && newpos > t) || (dist < 0 && newpos < t)) {

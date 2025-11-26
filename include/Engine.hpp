@@ -3,7 +3,6 @@
 #include "scene/textures/SheetManager.hpp"
 #include "scene/ObjectManager.hpp"
 #include "input/InputManager.hpp"
-#include "game/GameMaster.hpp"
 
 namespace engine {
     inline SheetManager* sm = nullptr;
@@ -13,5 +12,4 @@ namespace engine {
 
 namespace game {
     inline Camera* camera = nullptr;
-    inline Hand* hand = nullptr;
 }

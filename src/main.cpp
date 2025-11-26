@@ -4,6 +4,7 @@
 #include <emscripten.h>
 
 #include "render/RenderManager/RenderManager.hpp"
+#include "game/GameMaster.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
 
@@ -33,6 +34,7 @@ EM_BOOL gameloop(double time, void* userdata) {
 	}
 
 	// Game master updates states of game logic and object paths
+	gm->blackjack();
 	gm->update();
 	// OM updates objects according to states and paths
 	std::vector<FrameState*> fss = engine::om->update_objects();
@@ -71,7 +73,7 @@ int main() {
 	// Now we just pray that the sheetManager piped the input properly. :o
 
 	/************ FUCK AROUND ZONE**********/
-	gm->add_card_to_hand({3,'h'});
+	gm->add_card_to_hand({1,'h'});
 	gm->add_card_to_hand({4,'c'});
 	gm->add_card_to_hand({5,'d'});
 	gm->add_card_to_hand({6,'s'});

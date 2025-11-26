@@ -30,10 +30,16 @@ public:
     Hand();
     // Adds a card to the hand if there's space
     bool add_card(Card* c);
-    bool remove_card(uint8_t value, char suite);
-    bool remove_card(uint8_t cardNum);
+    Card* pop_card(uint8_t value, char suite);
+    // Removes a card with the given cardnum
+    Card* pop_card(uint8_t cardNum);
+    // Update the cards in the Hand with new paths
     void update_cards(bool force = false);
+
+    // Gets a pointer to the selector
+    [[nodiscard]] Object* get_selector() const;
+
+    // INPUT TARGET OVERRIDE
     bool getPress(short keybind) override;
-    [[nodiscard]] Object* get_pointer() const;
 
 };

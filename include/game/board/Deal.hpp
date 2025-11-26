@@ -9,17 +9,19 @@ private:
     std::vector<Card*> deal;
     // Position of the deal
     Vertex pos;
-    // Score of the deal
-    int score = 0;
+    // Gets the path a card takes to the deal.
+    Path get_deal_path(Card*& c);
 public:
     Deal();
     Deal(Vertex pos);
 
-    // Adds a card to the deal
+    // Gets the number of cards in the current deal
+    [[nodiscard]] int get_num_cards();
+    // Adds a card to the deal & gives it a target path.
     void add_card(Card* card, bool flipped = false);
     // Pops all the cards off the vector
     std::vector<Card*> pop_cards();
     // Gets the score of the curent deal
-    int get_score();
+    int get_score(int target = 21);
 
 };

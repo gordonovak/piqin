@@ -1,38 +1,51 @@
-#pragma once
-#include "generics/Object.hpp"
-#include "textures/asset-info/RegistryConstants.hpp"
+#include "game/cards/Card.hpp"
 
-// Use inline to avoid multiple-definition errors across translation units.
-inline const Transform defaultCardTransform = {
-    {scene::width / 2.0f, 0, 0},
-    {0,0,0},
-    48,
-    32,
-    1,
-    0.0f
-};
+uint8_t Card::to_state() {
+    // Modifier for calculating the state
+    char mod = 0;
+    // Spades are the default suit
+    if (suit == 'h') mod = 1;
+    else if (suit == 'd') mod = 2;
+    else if (suit == 'c') mod = 3;
+    // Calculate the sprite value
+    int ret = value + (mod * 13) - 2;
+    // If we're an ace, we add 13
+    if (value == 1) ret += 13;
+    // Return!
+    return ret;
+}
 
-inline const FrameState defaultCardFrameState = {
-    ASSET_DECK_ID
-};
+Card::Card(int val, char suite)
+    : value(abs(val)), suit(suite)
+{
+    if (value > 13) value = 13;
+    t = defaultCardTransform;
+    fs = defaultCardFrameState;
+    fs.state = to_state();
+}
 
-#define CARD_FLIPPED 53
+Card::Card(Card& c) {
+    value = c.value;
+    suit = c.suit;
+    flipped = c.flipped;
+    t = c.t;
+    fs = c.fs;
+}
 
-class Card : public Object {
-    uint8_t value;
-    char suite;
-    bool flipped = false;
+bool Card::operator==(const Card c) const {
+    return value == c.value && suit == c.suit;
+}
 
-    [[nodiscard]] uint8_t to_state(uint8_t val, char suit) const;
+void Card::flip() {
+    flipped = !flipped;
+    fs.state = (flipped) ? CARD_FLIPPED : to_state();
+}
 
-public:
-    Card(uint8_t value, char suite);
+bool Card::is_flipped() const {
+    return flipped;
+}
 
-    // Copy constructor
-    Card(Card& c);
-
-    bool operator==(const Card c) const;
-
-    void flip();
-    [[nodiscard]] bool is_flipped() const;
-};
+int Card::get_score() const {
+    if (value > 13) return 10;
+    return value;
+}

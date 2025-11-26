@@ -1,37 +1,43 @@
 // ReSharper disable CppTooWideScopeInitStatement
 #include "game/GameMaster.hpp"
 
-#include <iostream>
-#include <ostream>
-
 #include "Engine.hpp"
 
 // Initializes all the objects needed for the game.
 void GameMaster::initialize() {
-    game::hand = new Hand();
-    engine::om->add_object(game::hand->get_pointer());
+    hand = new Hand();
+    board = new Board();
+    engine::om->add_object(hand->get_selector());
 }
 
 void GameMaster::update() {
-    game::hand->update_cards();
+    hand->update_cards();
 }
 
 // Deletes the objects it's responsible for.
 GameMaster::~GameMaster() {
-    delete game::hand;
+    delete hand;
 }
 
 // Adds cards to a hand:
-
 void GameMaster::add_card_to_hand(Card c) {
-    if (game::hand == nullptr) return;
+    if (hand == nullptr) return;
     auto card = new Card(c);
-    if (game::hand->add_card(card))
+    if (hand->add_card(card))
         engine::om->add_object(card);
     else
         delete card;
 }
 
+// Set hand has target
 void GameMaster::set_hand_as_target() {
-    engine::input->setInputTarget(game::hand);
+    engine::input->setInputTarget(hand);
+}
+
+void GameMaster::blackjack() {
+    if (board->switch_to_hand)
+        engine::input->setInputTarget(hand);
+    else {
+        engine::input->setInputTarget(board);
+    }
 }

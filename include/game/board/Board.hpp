@@ -5,20 +5,44 @@
 #include <vector>
 
 #define BOARD_Z_BASE 9.0f
+#define MAX_DECK_SIZE 100
 class Board : public InputTarget {
 private:
     // The deck with all the cards
     std::vector<Card*> deck;
+    // Position of the deck
+    Vertex deckPos;
     // Player character's deal
-    Deal* player;
+    Deal player = Deal(Vertex(scene::width/2, scene::height/2, 0));
     // Opponent's deal
-    Deal* opponent;
-    // Pointer back to player's hand
-    InputTarget* hand;
+    Deal opponent = Deal(Vertex(scene::width/2, scene::height/4, 0));
     // Number it takes to get blackjack
-    int targetScore;
+    int targetScore = 21;
+
+    // Returns the path of the card back to the deck.
+    Path get_card_path(Card*& c) const;
+    // Allows us to remove a card from the vector
+    bool remove_card(Card* c);
+    // Removes a card from the deck by popping it
+    [[nodiscard]] Card* pop_card(int i);
 
 public:
-    // Default constructor -> creates deck of cards
+    // Pointer back to player's hand
+    bool switch_to_hand = false;
+    // Lets the gameMaster to know when to switch to the hand again.
+
+    // Default constructor, creates 52 cards
     Board();
+    // Gets the deck
+    std::vector<Card*>& get_deck();
+    // Adds a card to the deck
+    void add_card(Card* c);
+    // Adds a card to the player deal
+    bool hit_player();
+    // Adds a card to the opponent deal
+    bool hit_opponent();
+
+    // Input Target overrides
+    bool getPress(short keybind) override;
+
 };

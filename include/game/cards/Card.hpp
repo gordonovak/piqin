@@ -2,18 +2,17 @@
 #include "generics/Object.hpp"
 #include "textures/asset-info/RegistryConstants.hpp"
 
-
 #define CARD_FLIPPED 53
 
 class Card : public Object {
-    uint8_t value;
-    char suite;
+    int value;
+    char suit;
     bool flipped = false;
 
-    [[nodiscard]] uint8_t to_state(uint8_t val, char suit) const;
+    [[nodiscard]] uint8_t to_state() ;
 
 public:
-    Card(uint8_t value, char suite);
+    Card(int val, char suite);
 
     // Copy constructor
     Card(Card& c);
@@ -22,7 +21,11 @@ public:
 
     void flip();
     [[nodiscard]] bool is_flipped() const;
+
+    // Gets the card score
+    int get_score() const;
 };
+
 inline const Transform defaultCardTransform = {
     {scene::width / 2.0f, 0, 0},
     {0,0,0},

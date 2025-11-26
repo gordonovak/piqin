@@ -1,10 +1,12 @@
 #pragma once
 
 #include "game/cards/Hand.hpp"
+#include "game/board/Board.hpp"
 
 class GameMaster {
 private:
     Hand* hand = nullptr;
+    Board* board = nullptr;
 public:
     GameMaster() = default;
     ~GameMaster();
@@ -16,4 +18,6 @@ public:
     void add_card_to_hand(Card c);
     // Set input target
     void set_hand_as_target();
+
+    void blackjack();
 };
