@@ -1,7 +1,7 @@
 #pragma once
-#include "cards/CardSelector.hpp"
-#include "game/blackjack/Hand.hpp"
-#include "cards/Draw.hpp"
+#include "bj-objects/CardSelector.hpp"
+#include "bj-objects/Hand.hpp"
+#include "bj-objects/Draw.hpp"
 #include "cards/Deck.hpp"
 #include "Pather.hpp"
 #include "BJEnums.hpp"

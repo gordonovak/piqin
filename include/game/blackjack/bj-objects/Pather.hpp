@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Hand.hpp"
-#include "cards/Card.hpp"
-#include "cards/Deck.hpp"
-#include "cards/Discard.hpp"
+#include "../cards/Card.hpp"
+#include "Deck.hpp"
+#include "Discard.hpp"
 
 namespace blackjack {
     // Paths all of our cards to each location

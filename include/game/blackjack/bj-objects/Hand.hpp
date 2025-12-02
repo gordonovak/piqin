@@ -1,7 +1,7 @@
 #pragma once
-#include "cards/CardSelector.hpp"
+#include "CardSelector.hpp"
 #include "game/blackjack/cards/Card.hpp"
-#include "game/blackjack/cards/Draw.hpp"
+#include "Draw.hpp"
 
 #define HAND_Z_BASE 10.0f
 #define HAND_DEFAULT_SPEED 1.0f
