@@ -1,4 +1,4 @@
-#include "game/blackjack/cards/Discard.hpp"
+#include "../../../../include/game/blackjack/bj-objects/Discard.hpp"
 
 using namespace blackjack;
 

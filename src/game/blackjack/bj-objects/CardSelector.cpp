@@ -1,4 +1,4 @@
-#include "game/blackjack/cards/CardSelector.hpp"
+#include "../../../../include/game/blackjack/bj-objects/CardSelector.hpp"
 
 #include <iostream>
 #include <ostream>

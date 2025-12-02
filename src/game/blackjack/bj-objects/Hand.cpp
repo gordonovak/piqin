@@ -1,4 +1,4 @@
-#include "game/blackjack/Hand.hpp"
+#include "../../../../include/game/blackjack/bj-objects/Hand.hpp"
 
 #include <iostream>
 

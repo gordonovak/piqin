@@ -1,4 +1,4 @@
-#include "game/blackjack/cards/Deck.hpp"
+#include "../../../../include/game/blackjack/bj-objects/Deck.hpp"
 #include "game/blackjack/BJEnums.hpp"
 #include <iostream>
 

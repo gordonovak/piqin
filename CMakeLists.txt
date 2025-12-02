@@ -18,7 +18,7 @@ add_executable(norton
         src/game/blackjack/bj-objects/Hand.cpp
         # Cards
         src/game/blackjack/cards/Card.cpp
-        src/game/blackjack/cards/CardSelector.cpp
+        src/game/blackjack/bj-objects/CardSelector.cpp
         src/game/blackjack/bj-objects/Draw.cpp
         src/game/blackjack/bj-objects/Deck.cpp
         src/game/blackjack/bj-objects/Discard.cpp

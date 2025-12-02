@@ -1,7 +1,7 @@
-#include "game/blackjack/Pather.hpp"
+#include "../../../../include/game/blackjack/bj-objects/Pather.hpp"
 
 #include "engine/particles/ParticleRhombus.hpp"
-#include "game/blackjack/cards/Deck.hpp"
+#include "../../../../include/game/blackjack/bj-objects/Deck.hpp"
 
 using gengine::Vertex;
 using namespace blackjack;
