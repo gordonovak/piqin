@@ -16,7 +16,7 @@ namespace blackjack {
         PINK = 5
     };
     // CardSelector Object!
-    struct CardSelector : gengine::Selector<Card> {
+    struct CardSelector : geng::Selector<Card> {
         using Selector::target;
         short targetNum = 0;
         // Constructor
@@ -24,7 +24,7 @@ namespace blackjack {
 
         // Tells the selector to move to it's target card. Recess if you want the pointer closer
         void move(bool recess) override;
-        void move(gengine::Vertex pos, float speed) override;
+        void move(geng::Vertex pos, float speed) override;
 
         // Lets us switch targets
         void switchTarget(Card* newTarget, bool moveTarget) override;
@@ -43,7 +43,7 @@ namespace blackjack {
 
     /*                              */
     // Default transform properties for our object
-    const static gengine::Transform card_selector_transform = {
+    const static geng::Transform card_selector_transform = {
         BJ_DEFAULT_SELECTOR_POS, // NOLINT(*-narrowing-conversions)
         8,
         8,

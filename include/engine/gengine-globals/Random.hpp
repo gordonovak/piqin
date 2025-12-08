@@ -1,20 +1,26 @@
 #pragma once
 #include <random>
 
-namespace gengine {
+namespace geng {
     struct Random {
+    private:
         std::mt19937 gen;
         std::uniform_real_distribution<float> dfloat;
+    public:
         Random() {
             gen = std::mt19937(std::random_device{}());
-            dfloat = std::uniform_real_distribution<float>(-9999999, 9999999);
         }
-        int rint() {
-            return gen();
+        int rint(int low, int high) {
+            std::uniform_int_distribution<int> dist(low, high);
+            return dist(gen);
         }
-        float rfloat() {
-            return dfloat(gen);
+
+        float rfloat(float low, float high) {
+            std::uniform_real_distribution<float> dist(low, high);
+            return dist(gen);
         }
     };
-    inline Random GENG_Rand;
+    namespace global {
+        inline Random GENG_Rand;
+    }
 }

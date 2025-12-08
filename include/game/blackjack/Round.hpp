@@ -4,7 +4,7 @@
 
 namespace blackjack {
 
-    class Round final : public gengine::InputTarget {
+    class Round final : public geng::InputTarget {
         // Player scores
         int playerScore = 0;
         int opponentScore = 0;
@@ -31,7 +31,7 @@ namespace blackjack {
         // Checks if we've gotten a blackjack
         void check_blackjack();
         // Gets a keypress or release
-        bool get_press(gengine::GENG_Input keybind) override;
-        void get_release(gengine::GENG_Input keybind) override;
+        bool get_press(geng::GENG_Input keybind) override;
+        void get_release(geng::GENG_Input keybind) override;
     };
 }

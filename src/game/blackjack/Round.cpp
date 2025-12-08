@@ -1,11 +1,12 @@
 #include "game/blackjack/Round.hpp"
 #include "EngineSource.hpp"
 #include "engine/gengine-globals/Timer.hpp"
+#include "engine/pathing/path-types/BalloonPath.hpp"
 
 using namespace blackjack;
 
 // Easy macro for adding events
-#define ADDEV(t, f) gengine::GENG_Events.add_event(t, [=]{f;})
+#define ADDEV(t, f) geng::GENG_Events.add_event(t, [=]{f;})
 
 Round::Round(Board* board) : board(board) {}
 
@@ -53,7 +54,7 @@ void Round::opponent_turn() {
         ADDEV(600, round_end());
 }
 
-void Round::get_release(gengine::GENG_Input keybind) {
+void Round::get_release(geng::GENG_Input keybind) {
     if (acceptingInput)
         board->get_release(keybind);
 }
@@ -66,9 +67,10 @@ void Round::round_end() {
     std::vector<Card*>& pdr = board->playerDraw.gather_objects();
     std::vector<Card*>& opr = board->opponentDraw.gather_objects();
     for (auto& i: board->playerDraw.gather_objects())
-        ADDEV(std::max(abs(120 - 5*k++), 10), i->set_shake(BJ_SHAKE_END_ROUND));
+        ADDEV(std::max(abs(120 - 5*k++), 10), bob.apply_effect(*i, BJ_SHAKE_END_ROUND));
     for (auto& i: board->opponentDraw.gather_objects())
-        ADDEV(std::max(abs(120 - 5*k++), 10), i->set_shake(BJ_SHAKE_END_ROUND));
+        ADDEV(std::max(abs(120 - 5*k++), 10), bob.apply_effect(*i, BJ_SHAKE_END_ROUND));
+
 
     ADDEV(750,
         std::vector<Card*> cs = board->playerDraw.pop_cards(); std::vector<Card*> os = board->opponentDraw.pop_cards();
@@ -84,10 +86,10 @@ void Round::refresh_deck() {
 }
 
 
-bool Round::get_press(gengine::GENG_Input keybind) {
+bool Round::get_press(geng::GENG_Input keybind) {
     if (acceptingInput) {
         pather.update_hand(board->hand);
-        if (keybind == gengine::GENG_Input::BACK && board->floater == nullptr) {
+        if (keybind == geng::GENG_Input::BACK && board->floater == nullptr) {
             board->hand.flayed = false;
             pather.update_hand(board->hand);
             board->update_selector();

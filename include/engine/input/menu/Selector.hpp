@@ -1,10 +1,10 @@
 #pragma once
-#include "engine/objects/Object.hpp"
+#include "engine/actors/Actor.hpp"
 
-namespace gengine {
+namespace geng {
     // Generic selector object
     template <typename T>
-    struct Selector : Object {
+    struct Selector : Actor {
         // Target of the selector
         T* target;
 

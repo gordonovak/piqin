@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/objects/Transform.hpp"
+#include "engine/actors/Transform.hpp"
 
-namespace gengine {
+namespace geng {
     /**
   * @brief Effects attach themselves to Transform objects, so any type with a Transform can have an effect applied to it.
   * @details To create a new effect, make a subclass of the effect object and add it via the Engine.
@@ -19,7 +19,6 @@ namespace gengine {
   * - Effect's constructors will initialize the initDuration and permanent fields for you
   * - Add effects to the EffectManager with @code engine.add_effect(Object* o, Effect* e) @endcode
   * - Remove permanent effects with @code engine.remove_effect(Effect *e) @endcode or @code engine.remove_effect(Object* o) @endcode
-  * - Each Effect at base takes up 36 bytes (8 + 4 + 4 + 1 [3 padding] + 4 + 4 + 8 for virtual funcs)
   * - Unless you explicitly program it, Effects will not return an object to its original transform upon completion
   *
   * @warning To make an effect you must override the update() function. Update() returns true if the effect is done, false otherwise.
@@ -32,41 +31,55 @@ namespace gengine {
         float initDuration;
         /// Current duration of the effect.
         float duration;
-        /// If the effect is permantn
+        /// Amplitude of the effect
+        float amplitude = 1;
+        /// If the effect is permanent
         bool permanent;
     private:
         /// For engine identification purposes.
         int id = -1;
-        /// The id of the target object (used for removal of effects by object id)
-        int target_id = -1;
     public:
-        // Constructor without transform (permanent)
+        /// Constructor without transform (permanent)
         Effect()
             : initDuration(0), duration(0), permanent(true) {}
-        // Constructor without transform (duration-limited)
-        Effect(float duration)
+        /// Constructor without transform (duration-limited)
+        explicit Effect(float duration)
             : initDuration(duration), duration(duration), permanent(duration == -1) {}
-        // Constructor for Permanent Effect
-        Effect(Transform& t)
+        /// Constructor without transform (duration-limited and amplitude)
+        explicit Effect(float duration, float amplitude)
+            : initDuration(duration), duration(duration), amplitude(amplitude), permanent(duration == -1) {}
+        /// Constructor for Permanent Effect
+        explicit Effect(Transform& t)
             : t(&t), initDuration(0), duration(0), permanent(true) {}
-        // Constructor for duration-bound effect
+        /// Constructor for duration-bound effect
         Effect(Transform& t, float duration)
             : t(&t), initDuration(duration), duration(initDuration), permanent(duration == -1) {}
-        // Virtual destructor cause i'm considerate like that
+        /// Constructor for a duration and an amplitude
+        Effect(Transform& t, float duration, float amplitude)
+            : t(&t), initDuration(duration), duration(duration),
+                    amplitude(amplitude), permanent(duration == -1) {}
+
+        /// Virtual destructor cause i'm considerate like that
         virtual ~Effect() = default;
-
-        // Pure virtual update function. Return true if effect is done. False otherwise.
+        /// Pure virtual update function. Return true if effect is done. False otherwise.
         virtual bool update() = 0;
+        /// Immmediately ends an effect
+        virtual void end() { duration = 0; permanent = false;};
 
-        // For use by the engine
-        // Setting the transform
+
+        // ............... //
+        // For use by the engine //
+        // ............... //
+        /// Sets the transform the effect targets.
         void set_transform(Transform& transform) { t = &transform; }
-        // Effect IDs
+        /// Sets the ID of the effect
         void set_id(int i) { id = i; }
+        /// Gets the ID of the effect
         [[nodiscard]] int get_id () const { return id; }
-        // Target IDs
-        void set_target_id(int i) { target_id = i; }
-        [[nodiscard]] int get_target_id () const { return target_id; }
+        /// Gets the target_id of the transform the effect is applied to
+        [[nodiscard]] int get_target_id () const { return (t == nullptr) ? 0 : t->id; }
+        /// Returns if the effect is permanent or not
+        [[nodiscard]] bool is_permanent () const { return permanent; }
 
     };
 }

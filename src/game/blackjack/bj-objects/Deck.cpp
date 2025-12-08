@@ -10,7 +10,7 @@ Deck::Deck() {
     // Sets up the parameters of our default deck
     t = default_deck;
     // Gets the sprite we render with.
-    fs.frame_sheet_id = ASSET_CARD_STACK_ID;
+    anim.frame_table_id = ASSET_CARD_STACK_ID;
     set_animation(2);
 
     for (int i = 1; i <= 12; i++) {
@@ -55,7 +55,7 @@ void Deck::add_card(Card* c) {
 Card* Deck::pop_card() {
     if (drawPile.empty()) return nullptr;
     // Random card!
-    int i = gengine::GENG_Rand.rint() % drawPile.size(); // NOLINT(*-narrowing-conversions)
+    int i = geng::GENG_Rand.rint() % drawPile.size(); // NOLINT(*-narrowing-conversions)
     Card* c = drawPile[i];
     drawPile.erase(drawPile.begin() + i);
     prep_card_for_pop(c);

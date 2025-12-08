@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
-#include "engine/objects/Transform.hpp"
+#include "engine/actors/Transform.hpp"
 #include "BJConstants.hpp"
 #include "engine/gengine-globals/scene.hpp"
 
@@ -76,7 +76,7 @@ namespace blackjack {
     };
 
     // Default Object Setups
-    static const gengine::Transform default_deck = {
+    static const geng::Transform default_deck = {
         BJ_DEFAULT_DECK_POS,
         53,
         37,

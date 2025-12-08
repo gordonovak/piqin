@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-namespace gengine {
+namespace geng {
     inline short GENG_buffer = 400;
 
     enum class GENG_Input : uint8_t {

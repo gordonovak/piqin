@@ -3,11 +3,11 @@
 #include <vector>
 #include <iostream>
 
-#include "../utilities/types/Vertex.hpp"
-#include "../objects/Object.hpp"
-#include "engine/textures/asset-info/RegistryConstants.hpp"
+#include "engine/types/Vertex.hpp"
+#include "engine/actors/Actor.hpp"
+#include "engine/animation/asset-info/RegistryConstants.hpp"
 
-namespace gengine {
+namespace geng {
     // This is a white point on our texture
     inline SDL_FPoint white = {4.f/TEX_WIDTH, 4.f/TEX_HEIGHT};
     /**
@@ -24,10 +24,13 @@ namespace gengine {
      * 7. gengine::Vertex pos -> location of the ParticleGroup
      * 8. int id -> used for indexing purposes by the engine
      * 9. Transform* horse -> if the ParticleGroup is attatched to a transform object, horse is not nullptr.
-     * @warning There exists two essential functions to override for ParticleGroups: update() and to_vertex(). Update() returns true when the particle effect is over. to_vertex(std::vector<SDL_Vertex>&buffer) takes in the vertex buffer DIRECTLY FROM THE RENDERER. Thus, you must manually specify the proper vertices for your particle effect manually. There is no nice tool to do this for you. If you do not properly add your SDL_Vertices in sets of three to the render buffer, visuals likely will bug and not work, and there is a high probability of memory corruption.
+     * @warning There exists two essential functions to override for ParticleGroups:
+     * @code update()@endcode and @code to_vertex()@endcode. @code update()@endcode returns true when the particle effect is over. @code to_vertex(std::vector<SDL_Vertex>&buffer)@endcode
+     * takes in the vertex buffer DIRECTLY FROM THE RENDERER. Thus, you must manually specify the proper vertices for your particle effect manually. There is no nice tool to do this for you.
+     * If you do not properly add your @code SDL_Vertices@endcode in sets of three to the render buffer, visuals likely will bug and not work, and there is a high probability of memory corruption.
      * @note There exists an "inline SDL_FPoint white" in this definition. Just make sure you set the "4.f and 4.f" to a point on your atlas texture that is RGB(255,255,255,255)
     */
-    class ParticleGroup {
+    class ParticleGroup : public Gear {
     protected:
         // Lets us have relevant overloads
         float duration;     // -1 means permanent.
@@ -39,8 +42,6 @@ namespace gengine {
 
     public:
         Vertex pos = Vertex(0,0,0);
-        // Id of the particlegroup
-        int id = -1;
         // position of the group
 
         // If they're attatched to an object, they ride it like a horse
@@ -48,13 +49,15 @@ namespace gengine {
 
         ParticleGroup(const Vertex pos, const float strength, const float speed, const float duration, const SDL_Color color) :
                 pos(pos), duration(duration), strength(strength), speed(speed), color(color) { if (duration == -1) permanent = true; }
-        ParticleGroup(Object* o, const float strength, const float speed, const float duration, const SDL_Color color)
-            : strength(strength), speed(speed), color(color), pos(o->pos()), horse(&o->t), duration(duration) { this->pos = o->pos(); this->pos.z = pos.z - 1.0f; if (duration == -1) permanent = true;}
+        ParticleGroup(Actor* o, const float strength, const float speed, const float duration, const SDL_Color color)
+            : strength(strength), speed(speed), color(color), pos(o->t.pos), horse(&o->t), duration(duration) { this->pos = o->t.pos; this->pos.z = pos.z - 1.0f; if (duration == -1) permanent = true;}
 
         // Lets us update our particles. Should return true if done rendering.
         virtual bool update() = 0;  // pure virtual
-        // Returns the render rectangles for our particle. MUST RETURN THE NUMBER OF VERTICES
-        [[nodiscard]] virtual int to_vertex(std::vector<SDL_Vertex>& buffer) = 0;
+        // Returns the rendering vertices for our particle. MUST RETURN THE NUMBER OF VERTICES
+        virtual void to_vertex(std::vector<SDL_Vertex>& buffer) = 0;
+        // Returns the z-index
+        [[nodiscard]] float z_index() const override { return pos.z; }
         // Destructor
         virtual ~ParticleGroup() = default;
         // Gets the z index

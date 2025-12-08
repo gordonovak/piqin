@@ -4,8 +4,9 @@
 #include <emscripten.h>
 
 #include "EngineSource.hpp"
+#include "engine/font/Font.hpp"
 #include "game/GameMaster.hpp"
-#include "engine/textures/asset-info/HeaderRegistry.hpp"
+#include "../include/engine/animation/asset-info/HeaderRegistry.hpp"
 
 // Here's our game manager!
 GameMaster* gm = nullptr;
@@ -20,13 +21,6 @@ EM_BOOL gameloop(double time, void* userdata) {
 
 	if (!bob.tick(time))
 		return EM_FALSE;
-	double newtime = emscripten_get_now();
-
-	// All game logic goes here!
-	gm->blackjack();
-	// Game master updates states of game logic and object paths
-	gm->update();
-	newtime = emscripten_get_now();
 
 	// <><><><><><><><>
 	// Finally we render
@@ -43,7 +37,7 @@ int main() {
 	// GameMaster -> Handles game logic
 	gm = new GameMaster();
 	gm->initialize();									// GameMaster
-	// Now we just pray that the sheetManager piped the input properly. :o
+	// Now we just pray that the FrameManager piped the input properly. :o
 
 	/************ FUCK AROUND ZONE**********/
 

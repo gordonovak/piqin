@@ -1,19 +1,19 @@
-#include "engine/textures/Frame.hpp"
+#include "engine/animation/Frame.hpp"
 #include "engine/gengine-globals/EngineEnums.hpp"
 #include "engine/utilities/Utilities.hpp"
 
-using namespace gengine::textures;
+using namespace geng;
 
 // ................
 // Frame Code
 // ................
 
-Frame::Frame(std::vector<SDL_FPoint> points, float duration, gengine::GENG_Anim anim)
+Frame::Frame(std::vector<SDL_FPoint> points, float duration, geng::GENG_Anim anim)
     : vertexPoints(points),duration(duration), anim(anim) { }
 
 void Frame::append_vertices(std::vector<SDL_Vertex>& buffer, Transform& t) {
     SDL_Vertex tl, tr, bl, br;
-    if (t.locked) {
+    if (t.is_locked()) {
         float ttw = roundf(t.pos.x +t.offset.x - t.w/2);
         float ttwt = roundf(t.pos.x+t.offset.x + t.w/2);
         float tth = roundf(t.pos.y+t.offset.y - t.h/2);
@@ -26,8 +26,8 @@ void Frame::append_vertices(std::vector<SDL_Vertex>& buffer, Transform& t) {
     }
     else {
         // Flipping if we choose to do so
-        signed char flipX = (t.flipX) ? -1 : 1;
-        signed char flipY = (t.flipY) ? -1 : 1;
+        signed char flipX = (t.flag << GFlag::flipX) ? -1 : 1;
+        signed char flipY = (t.flag << GFlag::flipX) ? -1 : 1;
         float ttw = flipX * t.w * t.scale;
         float tth = flipY * t.h * t.scale;
 
@@ -37,12 +37,12 @@ void Frame::append_vertices(std::vector<SDL_Vertex>& buffer, Transform& t) {
         SDL_FPoint vpBL = vertexPoints[2];
         SDL_FPoint vpBR = vertexPoints[3];
         // If we flipped x
-        if (t.flipX) {
+        if (t.flag << GFlag::flipX) {
             std::swap(vpTL, vpTR);
             std::swap(vpBL, vpBR);
         }
         // if we flipped y
-        if (t.flipY) {
+        if (t.flag << GFlag::flipY) {
             std::swap(vpTL, vpBL);
             std::swap(vpTR, vpBR);
         }
@@ -54,7 +54,7 @@ void Frame::append_vertices(std::vector<SDL_Vertex>& buffer, Transform& t) {
             br = {{t.pos.x + ttw, t.pos.y + tth}, t.color, vpBR};
         }
         else {
-            float angle = t.angle * gengine::utils::degreesToRadians;
+            float angle = t.angle * gutils::degreesToRadians;
             // Get our adjusted center
             float rw = ttw * 0.5f;
             float rh = tth * 0.5f;
@@ -94,24 +94,13 @@ void Frame::append_vertices(std::vector<SDL_Vertex>& buffer, Transform& t) {
     buffer.push_back(br);
 }
 
-
-// ................
-// Quad Code
-// ................
-
-Quad::Quad(int x, int y, int w, int h, float duration, GENG_Anim anim)
-    : x(x), y(y), w(w), h(h), duration(duration), anim(anim) {}
-
-Frame Quad::to_frame(int& texWidth, int& texHeight) const {
-    float texW = static_cast<float>(texWidth);
-    float texH = static_cast<float>(texHeight);
-    // 0.5 prevents bleeding and weird rendering
-    std::vector<SDL_FPoint> vertexPoints(4);
-    vertexPoints[0] = {(x + 0.5f) / texW, (y + 0.5f) / texH}; // top-left
-    vertexPoints[1] = {(x + w + 0.01f) / texW, (y + 0.5f) / texH}; // top-right
-    vertexPoints[2] = {(x + 0.5f) / texW, (y + h - 0.f) / texH}; // bottom-left
-    vertexPoints[3] = {(x + w + 0.01f) / texW, (y + h - 0.0f) / texH}; // bottom-right
-    return Frame(vertexPoints, duration, anim);
+float Frame::get_duration() const {
+    return duration;
 }
+
+geng::GENG_Anim Frame::get_anim() const {
+    return anim;
+}
+
 
 

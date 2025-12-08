@@ -1,12 +1,12 @@
-#include "engine/particles/ParticleRhombus.hpp"
+#include "../../../include/engine/particles/particle-types/ParticleRhombus.hpp"
 
 #include <iostream>
 
 #include "engine/gengine-globals/scene.hpp"
-#include "engine/objects/Object.hpp"
+#include "engine/actors/Actor.hpp"
 
 
-using namespace gengine;
+using namespace geng;
 
 Rhombus::Rhombus(const Vertex &offset, float speed, float size) {
     pos = offset;
@@ -17,11 +17,11 @@ Rhombus::Rhombus(const Vertex &offset, float speed, float size) {
 }
 
 bool Rhombus::update() {
-    duration -= glb::scene.dt;
+    duration -= global::scene.dt;
     if (duration <= 0)
         return true;
-    pos.x += velocity.x * glb::scene.dt* 0.05;
-    pos.y += velocity.y * glb::scene.dt* 0.05;
+    pos.x += velocity.x * global::scene.dt* 0.05;
+    pos.y += velocity.y * global::scene.dt* 0.05;
     return false;
 }
 
@@ -51,7 +51,7 @@ ParticleRhombus::ParticleRhombus(Vertex pos, float size, float speed, float dura
     pos.z = pos.z - 1.f;
 }
 
-ParticleRhombus::ParticleRhombus(Object* o, float size, float speed, float duration, float period, SDL_Color Tint)
+ParticleRhombus::ParticleRhombus(Actor* o, float size, float speed, float duration, float period, SDL_Color Tint)
     : ParticleGroup(o, size, speed, duration, {255, 255, 255, 255}), period(period) {
     shadow_color = Tint;
     if (duration == -1)
@@ -62,8 +62,8 @@ ParticleRhombus::ParticleRhombus(Object* o, float size, float speed, float durat
 bool ParticleRhombus::update() {
     // Check if we're done
 
-    duration -= glb::scene.dt;
-    deltat += glb::scene.dt;
+    duration -= global::scene.dt;
+    deltat += global::scene.dt;
     bool done = (duration <= 0) && !permanent;
     if (deltat > period && !done) {
         deltat -= period;
@@ -87,7 +87,7 @@ bool ParticleRhombus::update() {
     return done;
 }
 
-int ParticleRhombus::to_vertex(std::vector<SDL_Vertex>& buffer) {
+void ParticleRhombus::to_vertex(std::vector<SDL_Vertex>& buffer) {
     int count = 0;
     if (horse != nullptr)
         pos = horse->pos;
@@ -95,5 +95,6 @@ int ParticleRhombus::to_vertex(std::vector<SDL_Vertex>& buffer) {
         i.to_vertex(buffer, color);
         count+=6;
     }
-    return count;
+    if (shadow())
+        shadows.apply_shadow(buffer, count);
 }

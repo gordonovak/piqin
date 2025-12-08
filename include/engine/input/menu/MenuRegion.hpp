@@ -4,7 +4,7 @@
 
 #include "Selector.hpp"
 
-namespace gengine {
+namespace geng {
     struct Selection {
         short row;
         short column;
@@ -63,7 +63,7 @@ namespace gengine {
 
 /* Implementation is below */
 
-namespace gengine {
+namespace geng {
     template<typename Item>
     MenuRegion<Item>::MenuRegion(std::vector<std::vector<Item*> *> menus, bool wrapx, bool wrapy)
         : menus(menus), wrapx(wrapx), s({0, 0}), selector(nullptr),

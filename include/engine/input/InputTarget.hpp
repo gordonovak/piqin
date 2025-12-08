@@ -1,7 +1,9 @@
 #pragma once
 #include <unordered_map>
 
-namespace gengine {
+#include "InputConstants.hpp"
+
+namespace geng {
     class InputTarget {
     public:
         // All the keys that are currently held down
@@ -12,7 +14,7 @@ namespace gengine {
         void getHeld(GENG_Input keybind) {(*heldKeys)[keybind] = true;};
 
         // Gets if a key is held
-        bool is_held(GENG_Input keybind) {
+        bool is_held(GENG_Input keybind) const {
             if (heldKeys->find(keybind) != heldKeys->end())
                 return true;
             return false;

@@ -12,7 +12,7 @@ namespace blackjack {
         // Holds the rows of discard cards
         std::vector<std::vector<Card*>*> discardFlay;
         // Contains the menu for our discard pile
-        gengine::MenuRegion<Card> menu;
+        geng::MenuRegion<Card> menu;
     public:
         Discard();
 
@@ -24,7 +24,7 @@ namespace blackjack {
         Card* pop_card();
         std::vector<Card*> pop_all();
 
-        // Gathers all objects in the discard pile
+        // Gathers all actors in the discard pile
         std::vector<Card*>& gather_objects();
         // Gets the size of the discard piel
         int size();

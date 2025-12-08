@@ -9,7 +9,6 @@ set(CMAKE_EXECUTABLE_SUFFIX ".html")
 add_executable(norton
         # Main and engine
         src/engine/Engine.cpp
-        src/engine/engine-logic/EngineAdding.cpp
         src/main.cpp
         # Game Logic Below
         src/game/GameMaster.cpp
@@ -36,11 +35,12 @@ add_executable(norton
         # Input
         src/engine/input/InputManager.cpp
 
-        # Objects
-        src/engine/objects/Path.cpp
-        src/engine/objects/Object.cpp
-        src/engine/objects/Shake.cpp
-        src/engine/objects/ObjectManager.cpp
+        # Actors
+        src/engine/objects/ActorManager.cpp
+
+        # Effects
+        src/engine/effects/EffectManager.cpp
+        src/engine/effects/effect-types/Shake.cpp
 
         # Particles
         src/engine/particles/ParticleManager.cpp
@@ -48,21 +48,20 @@ add_executable(norton
         src/engine/particles/ParticleSparkle.cpp
 
         # Rendering
-        src/engine/render/RenderManager.cpp
-        src/engine/render/Dst-Rects.cpp
+        src/engine/render/Renderer.cpp
         src/engine/render/Background.cpp
 
-        # Sprites
-        src/engine/textures/SheetManager.cpp
-        src/engine/textures/FrameSheet.cpp
-        src/engine/textures/FrameState.cpp
+        # Frame Management
+        src/engine/textures/FrameManager.cpp
+        src/engine/textures/FrameTable.cpp
         src/engine/textures/Frames.cpp
+        src/engine/textures/AnimInfo.cpp
         src/engine/textures/TextureRegister.cpp
 
         # Utilities
         src/engine/utilities/BasisDecoder.cpp
         src/engine/utilities/Utilities.cpp
-        src/engine/utilities/types/Vertex.cpp
+        src/engine/types/Vertex.cpp
         src/engine/utilities/basisu_transcoder/basisu_transcoder.cpp
         src/engine/utilities/zstd/zstd.c
 

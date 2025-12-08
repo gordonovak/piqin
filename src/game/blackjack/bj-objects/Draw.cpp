@@ -6,13 +6,13 @@
 
 using namespace blackjack;
 
-Draw::Draw(gengine::Vertex pos) : pos(pos) {}
+Draw::Draw(geng::Vertex pos) : pos(pos) {}
 
 int Draw::get_num_cards() {
     return draw.size();
 }
 
-// Adds a card and assigns it a gengine::Path.
+// Adds a card and assigns it a geng::Path.
 void Draw::add_card(Card *card, bool flipped) {
     card->flip_up();
     // Lets us flip it down if we want.
@@ -79,7 +79,7 @@ bool Draw::empty() const {
     return draw.empty();
 }
 
-void Draw::set_pos(gengine::Vertex v) {
+void Draw::set_pos(geng::Vertex v) {
     pos = v;
 }
 
@@ -93,7 +93,7 @@ std::vector<Card*>& Draw::gather_objects() {
     return draw;
 }
 
-gengine::Vertex Draw::get_pos() {
+geng::Vertex Draw::get_pos() {
     return pos;
 }
 
@@ -106,7 +106,7 @@ int Draw::get_index(Card* c) {
 }
 
 void Draw::print_ptrs() const {
-    std::cerr << "Printing ptrs (" << gengine::glb::scene.time << ")\n";
+    std::cerr << "Printing ptrs (" << geng::global::scene.time << ")\n";
     for (int i = 0; i < draw.size(); i++) {
         std::cerr << "c[" << i  << "] = " << draw[i] << std::endl;
     }

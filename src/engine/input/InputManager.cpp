@@ -4,7 +4,7 @@
 
 #define keyb key.keysym.scancode
 
-using namespace gengine;
+using namespace geng;
 
 InputManager::InputManager(InputTarget* menu) : menu(menu) {
     load_keybinds({{SDL_SCANCODE_0, GENG_Input::NONE}});

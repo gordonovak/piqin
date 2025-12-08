@@ -2,4 +2,4 @@
 
 #include "engine/Engine.hpp"
 
-inline gengine::Engine bob;
+inline geng::Engine bob;

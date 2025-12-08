@@ -3,7 +3,7 @@
 #include <deque>
 #include "scene.hpp"
 
-namespace gengine {
+namespace geng {
     class EventTimer final {
     private:
         std::deque<std::pair<float, std::function<void()>>> callbacks;
@@ -16,7 +16,7 @@ namespace gengine {
 
         void update() {
             if (!callbacks.empty()) {
-                callbacks.front().first -= glb::scene.dt;
+                callbacks.front().first -= global::scene.dt;
                 if (callbacks.front().first <= 0) {
                     const auto f = callbacks.front().second;
                     callbacks.pop_front();

@@ -25,20 +25,20 @@ Board::Board() :
     floater = nullptr;
 }
 
-// Destructor. Gathers all objects and deletes them
+// Destructor. Gathers all actors and deletes them
 Board::~Board() {
     for (auto& o : gather_objects())
         delete o;
 }
 
-// Gathers all objects in the BlackjackPlayer for storage in the ObjectManager.
-std::vector<gengine::Object*> Board::gather_objects() {
-    std::vector<gengine::Object*> allObjects;
+// Gathers all actors in the BlackjackPlayer for storage in the ObjectManager.
+std::vector<geng::Actor*> Board::gather_objects() {
+    std::vector<geng::Actor*> allObjects;
     allObjects.reserve(100);
-    // First we grab all of the easy objects
+    // First we grab all of the easy actors
     allObjects.push_back(&slct);
     allObjects.push_back(&deck);
-    // Then we need to make sure to grab all the sub objects.
+    // Then we need to make sure to grab all the sub actors.
     // First the deck
     allObjects.insert(allObjects.end(), deck.gather_objects().begin(), deck.gather_objects().end());
     // Then the player draw

@@ -1,7 +1,7 @@
 #include "engine/particles/ParticleCircle.hpp"
 #include "engine/gengine-globals/scene.hpp"
 
-using namespace gengine;
+using namespace geng;
 
 PCircle::PCircle(Vertex pos, int radius, float duration) : pos(pos), radius(radius), duration(duration) {
     direction.randomize();

@@ -1,11 +1,10 @@
-#include "engine/render/background-utilities/Background.hpp"
+#include "engine/rendering/background-utilities/Background.hpp"
 #include "engine/gengine-globals/scene.hpp"
 #include <iostream>
 #include <vector>
+#include "engine/types/Vertex.hpp"
 
-#include "engine/utilities/types/Vertex.hpp"
-
-using namespace gengine;
+using namespace geng;
 
 Background::Background(SDL_Renderer* renderer) {
     // First we make the background texture we write to.
@@ -13,14 +12,14 @@ Background::Background(SDL_Renderer* renderer) {
         renderer,
         SDL_PIXELFORMAT_ARGB8888,
         SDL_TEXTUREACCESS_STREAMING,
-        glb::scene.width,
-        glb::scene.height
+        global::scene.width,
+        global::scene.height
     );
 
     // Then we resize our vector in accordance with the number of pixels we'll need.
-    rgb.resize(glb::scene.width * glb::scene.height * 4);
+    rgb.resize(global::scene.width * global::scene.height * 4);
     create_heightMap();
-    pixelColors = std::vector<uint8_t>(glb::scene.width * glb::scene.height);
+    pixelColors = std::vector<uint8_t>(global::scene.width * global::scene.height);
 
     // Then, we set up a default Palette to use.
     addPalette(defaultBackgroundPalette);
@@ -44,16 +43,16 @@ void Background::update(int dt) {
     int pitch;
 
     SDL_LockTexture(background_texture, nullptr, &pixels, &pitch);
-    if (rgb.size() != glb::scene.width * glb::scene.height * 4)
-        rgb.resize(glb::scene.width * glb::scene.height * 4);
+    if (rgb.size() != global::scene.width * global::scene.height * 4)
+        rgb.resize(global::scene.width * global::scene.height * 4);
 
     //update_pixels();
 
-    for (int y =0; y < glb::scene.height; y++) {
+    for (int y =0; y < global::scene.height; y++) {
         memcpy(
             (uint8_t*)pixels + y * pitch,
-            &rgb[(y * glb::scene.width) * 4],   // each pixel is 4 bytes
-            glb::scene.width * 4
+            &rgb[(y * global::scene.width) * 4],   // each pixel is 4 bytes
+            global::scene.width * 4
         );
     }
 
@@ -71,7 +70,7 @@ void Background::update_pixels() {
     uint8_t speed = palettes[paletteNum].speed;
     pixelColors[0] = 0;
 
-    if (glb::scene.frame % speed == 0) {
+    if (global::scene.frame % speed == 0) {
         for (int i = 0; i < rgb.size(); i+=4) {
             // This is our switch
             if (random() % palettes[paletteNum].chaos == 0){
@@ -135,20 +134,20 @@ void Background::setPalette(int newPalette) {
 
 void Background::create_heightMap() {
     // creates a height map for dune-like structures
-    heightMap.resize(glb::scene.width * glb::scene.height);
+    heightMap.resize(global::scene.width * global::scene.height);
 
-    float scaley = 10.0f / glb::scene.height;
-    float scalex = 20.0f / glb::scene.width;
+    float scaley = 10.0f / global::scene.height;
+    float scalex = 20.0f / global::scene.width;
 
     float max = 0;
     float min = 0;
     Vertex source(1,1,1);
 
     // Now we take cross product with respect to the gradient of f
-    for (int y = 0; y < glb::scene.height; y++) {
-        for (int x = 0; x < glb::scene.width; x++) {
-            float sx = (x-(glb::scene.width/2)) * scalex;
-            float sy = (y-(glb::scene.height/2)) * scaley;
+    for (int y = 0; y < global::scene.height; y++) {
+        for (int x = 0; x < global::scene.width; x++) {
+            float sx = (x-(global::scene.width/2)) * scalex;
+            float sy = (y-(global::scene.height/2)) * scaley;
 
             //float h = 0.5*sinf(sy/4.0f - sx/2.0f) + 0.25*(sinf(sy-sx+cos(0.5f*sy-sx)))+sinf(0.2f*sx)+cosf(0.1f*sy);
 
@@ -164,7 +163,7 @@ void Background::create_heightMap() {
             if (h > max) max = h;
             else if (h < min) min = h;
             // add it to our height map
-            heightMap[y * glb::scene.width + x] = h;
+            heightMap[y * global::scene.width + x] = h;
         }
     }
 

@@ -1,4 +1,4 @@
-#include "engine/particles/ParticleRhombus.hpp"
+#include "../../../../include/engine/particles/particle-types/ParticleRhombus.hpp"
 #include "game/blackjack/Board.hpp"
 
 using namespace blackjack;

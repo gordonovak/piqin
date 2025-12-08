@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <unordered_map>
 
-namespace gengine {
+namespace geng {
     class InputManager final {
         InputQueue iqueue;
         InputTarget* it;
@@ -23,7 +23,7 @@ namespace gengine {
         // Initializes the keybinds
         void load_keybinds(std::unordered_map<SDL_Scancode, GENG_Input> mappy);
         // If we're in a menu or not
-        bool in_menu() const { return it == menu; }
+        [[nodiscard]] bool in_menu() const { return it == menu; }
         // Sets the input target
         void setInputTarget(InputTarget* target);
         // Gets if a key is pressed down.

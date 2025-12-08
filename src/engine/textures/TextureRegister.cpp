@@ -1,8 +1,8 @@
-#include "engine/textures/asset-info/TextureRegister.hpp"
+#include "engine/animation/asset-info/TextureRegister.hpp"
 #include <iostream>
 #include "engine/utilities/BasisDecoder.hpp"
 
-using namespace gengine::textures;
+using namespace geng;
 
 TextureRegister::TextureRegister() {}
 

@@ -5,7 +5,7 @@
 
 #include "engine/gengine-globals/scene.hpp"
 
-namespace gengine {
+namespace geng {
     class InputQueue {
     private:
         std::vector<std::pair<GENG_Input, short>> queue;
@@ -31,7 +31,7 @@ namespace gengine {
         }
         void update() {
             for (int f = front; f != back; f = (f + 1) % queue.size()) {
-                queue[f].second -= (glb::scene.dt); // NOLINT(*-narrowing-conversions)
+                queue[f].second -= (geng::global::scene.dt); // NOLINT(*-narrowing-conversions)
                 if (queue[f].second <= 0) pop();
             }
         }

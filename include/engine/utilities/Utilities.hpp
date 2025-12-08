@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace gengine::utils {
+namespace gutils {
 
     static constexpr float pi = 3.14159265358;
     static constexpr float degreesToRadians = (pi / 180.0f);

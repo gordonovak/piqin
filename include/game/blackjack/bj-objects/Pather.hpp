@@ -17,13 +17,16 @@ namespace blackjack {
 
         // Updates traveling cards
         void update(Deck& d);
+
+        void move_card_to_deck(int id);
+
         // Gives paths and particles to each location
         // Deck
         void move(Card* c, Deck* deck);
         void move(std::vector<Card *> cards, Deck *deck);
         // Discard
         void to_discard(Card* c, Discard* discard, short cardNum = 0);
-        void to_discard(Card* c, Discard* discard, gengine::GENG_Path path, short cardNum = 0);
+        void to_discard(Card* c, Discard* discard, geng::GENG_Path path, short cardNum = 0);
         void to_discard(std::vector<Card *> &cards, Discard* discard);
         // Hand
         bool move(Card *c, Hand &hand);

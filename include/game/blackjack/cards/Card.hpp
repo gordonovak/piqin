@@ -1,11 +1,11 @@
 #pragma once
 #include "EngineSource.hpp"
 #include "../BJEnums.hpp"
-#include "engine/textures/asset-info/RegistryConstants.hpp"
+#include "engine/animation/asset-info/RegistryConstants.hpp"
 
 namespace blackjack {
 
-    class Card : public gengine::Object {
+    class Card : public geng::Actor {
         int value;
         BJ_Suit suit;
         bool flipped = false;
@@ -45,8 +45,8 @@ namespace blackjack {
         bool use(Card* c);
     };
 
-    inline const gengine::Transform defaultCardTransform = {
-        {gengine::glb::scene.width / 2.0f, 0, 0},
+    inline const geng::Transform defaultCardTransform = {
+        {geng::global::scene.width / 2.0f, 0, 0},
         48,
         32,
         1

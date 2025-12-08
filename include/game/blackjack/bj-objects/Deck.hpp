@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/objects/Object.hpp"
+#include "engine/actors/Actor.hpp"
 #include "game/blackjack/cards/Card.hpp"
 #include <vector>
 
@@ -8,7 +8,7 @@
 #define STANDARD_DECK_SIZE 52
 
 namespace blackjack {
-    class Deck: public gengine::Object {
+    class Deck: public geng::Actor {
     private:
         // All cards in the deck
         std::vector<Card*> drawPile;

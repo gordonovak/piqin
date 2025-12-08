@@ -7,7 +7,7 @@
 
 namespace blackjack {
     // We must be able to input to our InputTarget
-    class Board : public gengine::InputTarget {
+    class Board : public geng::InputTarget {
     public:
         /* Member Objects */
         // We need to be able to select cards
@@ -25,7 +25,7 @@ namespace blackjack {
         Card* floater;
     private:
         // This lets us keep track of the menu
-        gengine::MenuRegion<Card> menu;
+        geng::MenuRegion<Card> menu;
         // Creates a menu region wrapper (dont worry about it)
         std::vector<Card*> discardTemp;
 
@@ -40,8 +40,8 @@ namespace blackjack {
         // Public constructor
         Board();
         ~Board() override;
-        // Gathers all the objects in the BlackjackPlayer class.
-        [[nodiscard]] std::vector<gengine::Object*> gather_objects();
+        // Gathers all the actors in the BlackjackPlayer class.
+        [[nodiscard]] std::vector<geng::Actor*> gather_objects();
 
         /* CARD_SELECTOR */
         /* Functions that concern the selector */
@@ -52,8 +52,8 @@ namespace blackjack {
         bool add_card_to_hand(Card* c);
 
         /* INPUT HANDLING */
-        bool get_press(gengine::GENG_Input keybind) override;
-        void get_release(gengine::GENG_Input keybind) override;
+        bool get_press(geng::GENG_Input keybind) override;
+        void get_release(geng::GENG_Input keybind) override;
 
         // Updates
         void update();

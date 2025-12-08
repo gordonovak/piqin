@@ -1,33 +1,33 @@
 #include "../../../../include/game/blackjack/bj-objects/Pather.hpp"
 
-#include "engine/particles/ParticleRhombus.hpp"
+#include "../../../../include/engine/particles/particle-types/ParticleRhombus.hpp"
 #include "../../../../include/game/blackjack/bj-objects/Deck.hpp"
 //#include "engine/particles/ParticleCircle.hpp"
 //#include "engine/particles/ParticleRect.hpp"
-#include "engine/particles/ParticleSparkle.hpp"
+#include "../../../../include/engine/particles/particle-types/ParticleSparkle.hpp"
 #include "game/blackjack/Board.hpp"
 
-#define ADDEV(t, f) gengine::GENG_Events.add_event(t, [=]{f;})
+#define ADDEV(t, f) geng::GENG_Events.add_event(t, [=]{f;})
 
 namespace blackjack {
     class Board;
 }
 
-using gengine::Vertex;
+using geng::Vertex;
 using namespace blackjack;
 
 /* ........... */
 /* Update*/
 /* ........... */
 
-void Pather::update(Deck& d) {
-    for (auto it = travel_to_deck.begin(); it != travel_to_deck.end(); ) {
-        if ((*it)->get_path() == nullptr) {
-            d.add_card((*it));
-            it = travel_to_deck.erase(it);
+void Pather::update(Deck& d) { }
+
+void Pather::move_card_to_deck(int id) {
+    for (auto it = travel_to_deck.begin(); it != travel_to_deck.end(); it++) {
+        if (id == (*it)->t.id) {
+            Deck
+            travel_to_deck.erase(it);
         }
-        else
-            ++it;
     }
 }
 
@@ -38,8 +38,8 @@ void Pather::update(Deck& d) {
 void Pather::move(Card* c, Deck* deck) {
     if (c == nullptr) return;
     Vertex target = BJ_DEFAULT_DECK_POS
-        + gengine::Vertex(deck->stack_height() + 1, deck->stack_height()-2, DECK_Z_BASE);
-    c->set_path(target, gengine::GENG_Path::REBOUND, 0.25, true);
+        + geng::Vertex(deck->stack_height() + 1, deck->stack_height()-2, DECK_Z_BASE);
+    c->set_path(target, geng::GENG_Path::REBOUND, 0.25, true);
     c->shadow = false;
     c->flip_down();
     travel_to_deck.push_back(c);
@@ -55,10 +55,10 @@ void Pather::move(std::vector<Card*> cards, Deck* deck) {
 /* ........... */
 // Legacy compatability function
 void Pather::to_discard(Card* c, Discard* discard, short cardNum) {
-    to_discard(c, discard, gengine::GENG_Path::BALLOON, cardNum);
+    to_discard(c, discard, geng::GENG_Path::BALLOON, cardNum);
 }
 // Regular function
-void Pather::to_discard(Card * c, Discard* discard, gengine::GENG_Path path, short cardNum) {
+void Pather::to_discard(Card * c, Discard* discard, geng::GENG_Path path, short cardNum) {
     if (c == nullptr) return;
     c->shadow = false;
     c->set_z(DECK_Z_BASE + ((discard->size())/MAX_DECK_SIZE));
@@ -76,7 +76,7 @@ void Pather::to_discard(std::vector<Card*>& cards, Discard* discard) {
 /* Hand */
 /* ........... */
 
-static gengine::Path hand_path(Hand& hand, Card*& c, const float& center, const float& height, int index = -1) {
+static geng::Path hand_path(Hand& hand, Card*& c, const float& center, const float& height, int index = -1) {
     float flay = hand.flayed * 20;
     if (index == -1)
         index = hand.get_index(c);
@@ -93,7 +93,7 @@ static gengine::Path hand_path(Hand& hand, Card*& c, const float& center, const 
             HAND_Z_BASE + 1.0f - abs(hand.lastTarget-index)/(maxHandSize*2.0f)
         },
         c->pos(),
-        gengine::GENG_Path::BALLOON,
+        geng::GENG_Path::BALLOON,
         0.5
     };
 }
@@ -101,8 +101,8 @@ static gengine::Path hand_path(Hand& hand, Card*& c, const float& center, const 
 bool Pather::move(Card *c, Hand &hand) {
     if (c == nullptr) return false;
     // Path changes depending on if flayed or not.
-    float center = gengine::glb::scene.width/2;
-    float height = 9.8*gengine::glb::scene.height/10;
+    float center = geng::global::scene.width/2;
+    float height = 9.8*geng::global::scene.height/10;
     if (!hand.add_card(c))
         return false;
     c->set_path(hand_path(hand, c, center, height), true);
@@ -110,8 +110,8 @@ bool Pather::move(Card *c, Hand &hand) {
 }
 
 void Pather::update_hand(Hand& hand) {
-    float center = gengine::glb::scene.width/2;
-    float height = 9.8*gengine::glb::scene.height/10;
+    float center = geng::global::scene.width/2;
+    float height = 9.8*geng::global::scene.height/10;
     std::vector<Card*> cards = hand.gather_objects();
     for (int i = 0; i < cards.size(); i++) {
         cards[i]->set_path(hand_path(hand, cards[i], center, height, i), true);
@@ -132,14 +132,14 @@ void Pather::move(Card *c, Draw& draw, int index, bool down) {
     if (index == -1)
         index = draw.get_index(c);
     // Gets target location for the draw
-    gengine::Vertex target(draw.get_pos().x - gengine::glb::scene.width/8.0f + index*24.0f, // NOLINT(*-narrowing-conversions)
+    geng::Vertex target(draw.get_pos().x - geng::global::scene.width/8.0f + index*24.0f, // NOLINT(*-narrowing-conversions)
         draw.get_pos().y - random()%8, DRAW_Z_BASE + (index/10.f));
     // EFIEOF
     c->set_z(DRAW_Z_BASE + (index/10.f));
-    gengine::Path p = {
+    geng::Path p = {
         target,
         c->pos(),
-        gengine::GENG_Path::BALLOON,
+        geng::GENG_Path::BALLOON,
         0.5
     };
     c->set_path(p);
@@ -153,11 +153,11 @@ void Pather::move(std::vector<Card*>& cards, Draw& draw) {
 
 void Pather::to_floater(Card *c) {
     if (c == nullptr) return;
-    c->hidden = false;
-    c->set_path(BJ_DEFAULT_FLOATER_POS, gengine::GENG_Path::BALLOON, 1.0);
+    c->t.hidden = false;
+    c->set_path(BJ_DEFAULT_FLOATER_POS, geng::GENG_Path::BALLOON, 1.0);
     c->set_z(BJ_DEFAULT_FLOATER_POS.z);
     c->set_shake(BJ_SHAKE_FLOATER);
-    auto* pr = new gengine::ParticleRhombus(c, 13.0, 0.7, -1, 200);
-    bob.attach_new_particle(c, pr);
+    auto* pr = new geng::ParticleRhombus(c, 13.0, 0.7, -1, 200);
+    bob.attach_particle(c, pr);
 }
 

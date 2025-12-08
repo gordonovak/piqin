@@ -1,10 +1,10 @@
 //#include "engine/particles/ParticleCircle.hpp"
-#include "engine/particles/ParticleSparkle.hpp"
+#include "../../../../include/engine/particles/particle-types/ParticleSparkle.hpp"
 #include "game/blackjack/Board.hpp"
 
 using namespace blackjack;
 
-#define ADDEV(t, f) gengine::GENG_Events.add_event(t, [=]{f;})
+#define ADDEV(t, f) geng::GENG_Events.add_event(t, [=]{f;})
 
 void Board::select() {
     // If we're currently playing a card
@@ -29,7 +29,7 @@ void Board::back() {
         add_card_to_hand(floater);
         // Remove it's shaking & particle animation
         floater->remove_shake();
-        bob.remove_attached_particle(floater);
+        bob.detach_particle(floater);
         // Turn it into nullpointer
         floater = nullptr;
         // Unflay the hand
@@ -60,7 +60,7 @@ void Board::pull_card() {
     else if (menu.row() == BJ_Target::OPPONENT)
         c = opponentDraw.pop_card(menu.col());
     if (c != nullptr) {
-        //auto* pc = new gengine::ParticleCircle(c, 20.0, 0.125, 200, 20, {180, 220, 180, 255});
+        //auto* pc = new geng::ParticleCircle(c, 20.0, 0.125, 200, 20, {180, 220, 180, 255});
         //bob.attach_new_particle(c, pc);
         pather.move(c, playerDraw);
     }
@@ -74,7 +74,7 @@ void Board::push_card() {
     else if (menu.row() == BJ_Target::PLAYER)
         c = playerDraw.pop_card(menu.col());
     if (c != nullptr) {
-        //auto* pc = new gengine::ParticleCircle(c, 20.0, 0.125, 200, 20, {180, 220, 180, 255});
+        //auto* pc = new geng::ParticleCircle(c, 20.0, 0.125, 200, 20, {180, 220, 180, 255});
         //bob.attach_new_particle(c, pc);
         pather.move(c, opponentDraw);
     }
@@ -90,7 +90,7 @@ void Board::grab_card() {
     else if (menu.row() == BJ_Target::PLAYER)
         c = playerDraw.pop_card(menu.col());
     if (c != nullptr) {
-        auto* ps = new gengine::ParticleSparkle(floater, 8.0f, 1.0, 350, 30);
+        auto* ps = new geng::ParticleSparkle(floater, 8.0f, 1.0, 350, 30);
         bob.attach_new_particle(c, ps);
         pather.move(c, hand);
         pather.update_hand(hand);
@@ -110,11 +110,11 @@ void Board::set_target_action(BJ_Action new_action) {
 }
 
 void Board::deactivate_floater() {
-    bob.remove_attached_particle(floater);
-    floater->set_shake(gengine::GENG_Shake::RANDOM,3.0,550,1,true);
-    ADDEV(600, auto* ps = new gengine::ParticleSparkle(floater, 8.0f, 1.0, 350, 30);
+    bob.detach_particle(floater);
+    floater->set_shake(geng::GENG_Shake::RANDOM,3.0,550,1,true);
+    ADDEV(600, auto* ps = new geng::ParticleSparkle(floater, 8.0f, 1.0, 350, 30);
         bob.attach_new_particle(floater, ps);
-        pather.to_discard(floater, &discard, gengine::GENG_Path::SINE);
+        pather.to_discard(floater, &discard, geng::GENG_Path::SINE);
         floater = nullptr);
     set_target_action(BJ_Action::PLAY);
     set_target_range(BJ_Target::HAND);

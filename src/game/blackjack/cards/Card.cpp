@@ -31,10 +31,10 @@ Card::Card(int val, BJ_Suit suite)
 
     if (value > 13 && suit != BJ_Suit::SPECIAL) value = 13;
     t = defaultCardTransform;
-    fs.frame_sheet_id = ASSET_DECK_ID;
-    set_animation(to_anim_num());
-    fs.default_animation = to_anim_num();
-    hidden = true;
+    anim.set_frame_table_id(ASSET_DECK_ID);
+    anim.set_animation(to_anim_num());
+    anim.default_animation = to_anim_num();
+    t.unhide();
 }
 
 bool Card::operator==(const Card c) const {
@@ -43,17 +43,17 @@ bool Card::operator==(const Card c) const {
 
 void Card::flip() {
     flipped = !flipped;
-    set_animation((flipped) ? CARD_FLIPPED : to_anim_num());
+    anim.set_animation((flipped) ? CARD_FLIPPED : to_anim_num());
 }
 
 void Card::flip_up() {
     flipped = false;
-    set_animation(fs.default_animation);
+    anim.set_animation(anim.default_animation);
 }
 
 void Card::flip_down() {
     flipped = true;
-    set_animation(CARD_FLIPPED);
+    anim.set_animation(CARD_FLIPPED);
 }
 
 bool Card::is_flipped() const {
@@ -72,19 +72,19 @@ bool Card::use(Card *c) {
 
     if (value == BJ_CARD_INCREMENT) {
         if (c->special()) {
-            c->set_shake(BJ_SHAKE_DENY);
+            bob.apply_effect(*c, BJ_SHAKE_DENY);
             return false;
         }
         c->adjust_value(3);
-        c->set_shake(gengine::GENG_Shake::CIRCULAR, 3, 400, -2);
+        bob.apply_effect(*c, new geng::EffectShake(geng::GENG_Shake::CIRCULAR, 3, 400, -2));
     }
     else if (value == BJ_CARD_DECREMENT) {
         if (c->special()) {
-            c->set_shake(BJ_SHAKE_DENY);
+            bob.apply_effect(*c, BJ_SHAKE_DENY);
             return false;
         }
         c->adjust_value(-3);
-        c->set_shake(gengine::GENG_Shake::CIRCULAR, 3, 400, 2);
+        bob.apply_effect(*c, new geng::EffectShake(geng::GENG_Shake::CIRCULAR, 3, 400, 2));
     }
     return true;
 }

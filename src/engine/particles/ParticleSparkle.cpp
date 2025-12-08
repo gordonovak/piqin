@@ -1,12 +1,12 @@
-#include "engine/particles/ParticleSparkle.hpp"
+#include "../../../include/engine/particles/particle-types/ParticleSparkle.hpp"
 
 #include <iostream>
 
 #include "engine/gengine-globals/scene.hpp"
-#include "engine/objects/Object.hpp"
+#include "engine/actors/Actor.hpp"
 
 
-using namespace gengine;
+using namespace geng;
 
 Sparkle::Sparkle(const Vertex &offset, float speed, float size) {
     pos = offset;
@@ -17,11 +17,11 @@ Sparkle::Sparkle(const Vertex &offset, float speed, float size) {
 }
 
 bool Sparkle::update() {
-    duration -= glb::scene.dt;
+    duration -= global::scene.dt;
     if (duration <= 0)
         return true;
-    pos.x += velocity.x * glb::scene.dt* 0.05;
-    pos.y += velocity.y * glb::scene.dt* 0.05;
+    pos.x += velocity.x * global::scene.dt* 0.05;
+    pos.y += velocity.y * global::scene.dt* 0.05;
     return false;
 }
 
@@ -58,7 +58,7 @@ ParticleSparkle::ParticleSparkle(Vertex pos, float size, float speed, float dura
         permanent = true;
 }
 
-ParticleSparkle::ParticleSparkle(Object* o, float size, float speed, float duration, float period, SDL_Color Tint)
+ParticleSparkle::ParticleSparkle(Actor* o, float size, float speed, float duration, float period, SDL_Color Tint)
     : ParticleGroup(o, size, speed, duration, {255, 255, 255, 255}), period(period) {
     shadow_color = Tint;
     if (duration == -1)
@@ -67,8 +67,8 @@ ParticleSparkle::ParticleSparkle(Object* o, float size, float speed, float durat
 
 bool ParticleSparkle::update() {
     // Check if we're done
-    duration -= glb::scene.dt;
-    deltat += glb::scene.dt;
+    duration -= global::scene.dt;
+    deltat += global::scene.dt;
     bool done = (duration <= 0) && !permanent;
     if (!done) {
         while (deltat > period) {
@@ -94,7 +94,7 @@ bool ParticleSparkle::update() {
     return done;
 }
 
-int ParticleSparkle::to_vertex(std::vector<SDL_Vertex>& buffer) {
+void ParticleSparkle::to_vertex(std::vector<SDL_Vertex>& buffer) {
     int count = 0;
     if (horse != nullptr)
         pos = horse->pos;
@@ -102,5 +102,6 @@ int ParticleSparkle::to_vertex(std::vector<SDL_Vertex>& buffer) {
         i.to_vertex(buffer, color);
         count += 18;
     }
-    return count;
+    if (shadow())
+        shadows.apply_shadow(buffer, count);
 }

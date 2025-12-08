@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
 #include "engine/particles/ParticleGroup.hpp"
-#include "../utilities/types/SparseVector.hpp"
+#include "../utilities/SparseVector.hpp"
 
-namespace gengine {
+namespace geng {
     // Manages all the particles in the scene
     class ParticleManager {
     private:
-        utils::SparseVector<gengine::ParticleGroup> groups;
+        gutils::SparseVector<geng::ParticleGroup> groups;
         std::vector<int> groups_removed;
 
     public:
@@ -18,7 +18,7 @@ namespace gengine {
         // Updates all particle groups
         void update();
 
-        ParticleGroup *find_by_object(const Object *o);
+        ParticleGroup *find_by_object(const Actor *o);
 
         // Adds a particle to the group
         ParticleGroup*& add(ParticleGroup* g);
@@ -27,7 +27,7 @@ namespace gengine {
 
         // Lets a particle die out by ending
         static void dissolve(ParticleGroup* g);
-        void dissolve(const Object *o); //Removes particle groups for objects
+        void dissolve(const Actor *o); //Removes particle groups for actors
 
         // Removes a particle from the sparse vector
         void remove(ParticleGroup* g);

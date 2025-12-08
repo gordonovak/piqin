@@ -10,10 +10,10 @@ namespace blackjack {
         // Lets us keep track of positions we excavate
         std::vector<short> removals;
         // Position of the draw
-        gengine::Vertex pos;
+        geng::Vertex pos;
     public:
         // Only one constructor. We specify a position.
-        explicit Draw(gengine::Vertex pos);
+        explicit Draw(geng::Vertex pos);
 
         // Gets the number of cards in the current draw
         [[nodiscard]] int get_num_cards();
@@ -30,10 +30,10 @@ namespace blackjack {
         Card* pop_card(int cardNum = -1);
         std::vector<Card*> pop_cards();
 
-        // Gathers all the objects in the draw
+        // Gathers all the actors in the draw
         std::vector<Card*>& gather_objects();
 
-        gengine::Vertex get_pos();
+        geng::Vertex get_pos();
 
         int get_index(Card *c);
 
@@ -42,7 +42,7 @@ namespace blackjack {
         // Utility functions
         [[nodiscard]] int size() const;
         [[nodiscard]] bool empty() const;
-        void set_pos(gengine::Vertex v) ;
+        void set_pos(geng::Vertex v) ;
         Card* operator[](int index);
     };
 }

@@ -2,31 +2,31 @@
 #include <cstdint>
 #include <iostream>
 
-namespace gengine {
+namespace geng {
     // Scene information
     struct Scene final {
     private:
-        float prevTime = 0.0f;
+        double prevTime = 0.0f;
     public:
         // Game timing
-        float dt = 0.0f;
-        float time = 0.0f;
+        double time = 0.0f;
         uint64_t frame = 0;
-        // Scene width, and height
-        int width = 380;
-        int height = 220;
+        float dt = 0.0f;
         // Main menu?
         bool mainMenu = false;
+        // Scene width, and height
+        int width = 330;
+        int height = 240;
 
-        void update(float time) {
-            this->time = time;
-            dt = time - prevTime;
-            prevTime = time;
+        void update(const double game_time) {
+            time = game_time;
+            dt = static_cast<float>(game_time - prevTime);
+            prevTime = game_time;
             frame++;
         }
     };
 
-    namespace glb {
+    namespace global {
         inline Scene scene;
     }
     // Fading in/out

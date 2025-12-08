@@ -2,8 +2,6 @@
 
 #include "blackjack/Board.hpp"
 #include "blackjack/Round.hpp"
-#include "blackjack/bj-objects/Hand.hpp"
-
 
 class GameMaster {
 private:
@@ -14,7 +12,7 @@ public:
     ~GameMaster();
     void initialize();
 
-    // Updating the objects
+    // Updating the actors
     void update();
     // Dealing with the Hand
     void add_card_to_hand(blackjack::Card c);

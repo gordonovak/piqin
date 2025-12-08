@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-using namespace gengine;
+using namespace geng;
 
 ParticleManager::ParticleManager() {
     groups.reserve(40);
@@ -47,7 +47,7 @@ void ParticleManager::update() {
     }
 }
 
-ParticleGroup* ParticleManager::find_by_object(const Object* o) {
+ParticleGroup* ParticleManager::find_by_object(const Actor* o) {
     for (auto& i: groups) {
         if (i->horse == &o->t) {
             return i;
@@ -69,7 +69,7 @@ void ParticleManager::dissolve(ParticleGroup *g) {
     g->end();
 }
 
-void ParticleManager::dissolve(const Object *o) {
+void ParticleManager::dissolve(const Actor *o) {
     if (o == nullptr) return;
     for (auto&i: groups) {
         if (i->horse == &o->t) {
