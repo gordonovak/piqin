@@ -1,9 +1,10 @@
 #pragma once
 #include <unordered_map>
+#include <iostream>
+
 
 #include "FrameTable.hpp"
 #include "Mesh.hpp"
-#include "AnimInfo.hpp"
 #include "engine/actors/Actor.hpp"
 
 
@@ -14,7 +15,7 @@ namespace geng {
     */
     class FrameManager {
     private:
-        /// Links frame_table_ids in AnimInfo objects to FrameTables.
+        /// Links frame_table_ids in AnimInfo actors to FrameTables.
         std::vector<FrameTable> sheets;
 
     public:

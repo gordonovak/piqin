@@ -9,7 +9,7 @@ namespace geng {
     class ReboundPath final : public Path {
     public:
         /// Regular constructor
-        ReboundPath(Transform* t, const Vertex &target, float speed);
+        ReboundPath(Gear* gear, const Vertex &target, float speed);
         /// Update override (true if done)
         bool update() override;
     };

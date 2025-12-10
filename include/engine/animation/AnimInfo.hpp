@@ -68,7 +68,7 @@ namespace geng {
 
         // Utility
         /// Appends vertices to the buffer
-        void calc_vertices(std::vector<SDL_Vertex>& vertices, Transform& t);
+        void calc_vertices(std::vector<SDL_Vertex>& vertices, Gear* gear);
         /// Increments the frame_index by one, and returns the new frame_index
         int pre_increment_frame();
         /// Debugger printer for AnimInfo.

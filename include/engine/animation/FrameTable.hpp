@@ -1,8 +1,13 @@
 #pragma once
 
+#include <iostream>
+
 #include "Frame.hpp"
 #include "AnimInfo.hpp"
 #include "engine/types/Quad.hpp"
+
+
+
 
 namespace geng {
     /**
@@ -48,3 +53,4 @@ namespace geng {
         [[nodiscard]] int get_texture_id() const;
     };
 }
+

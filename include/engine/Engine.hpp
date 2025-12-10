@@ -1,4 +1,7 @@
 #pragma once
+
+#include <iostream>
+
 #include "effects/EffectManager.hpp"
 #include "particles/ParticleManager.hpp"
 #include "actors/ActorManager.hpp"
@@ -7,6 +10,7 @@
 #include "pathing/PathManager.hpp"
 #include "rendering/Renderer.hpp"
 #include "animation/FrameManager.hpp"
+
 
 
 namespace geng {
@@ -90,12 +94,12 @@ namespace geng {
         void attach_particles(std::vector<ParticleGroup*>& pgs);
         // <><><> Effects <><><>
         /// Adds an effect to an actor
-        void apply_effect(Actor& a, geng::Effect* e);
+        void apply_effect(geng::Effect *e);
         /// Adds an effect to a transform object.
-        void apply_effect(Transform& t, geng::Effect* e);
+        void apply_effect(Gear *g, geng::Effect *e);
         // <><><> Paths <><><>
         void set_path(Path* p);
-        void set_path(Path* p, Transform& t, const Vertex &offset = {0.f, 0.f, 0.f});
+        void set_path(Path *p, Gear *g, const Vertex &offset = {0.f, 0.f, 0.f});
 
         // .......................... //
         /* Removals from the engine!!! */
@@ -114,7 +118,7 @@ namespace geng {
         void detach_particle(const std::vector<ParticleGroup*>& pgs);
         // <><><> Effects <><><>
         /// Removes all effects from an actor
-        void strip_effect(Actor* a);
+        void strip_effect(Gear *g);
         /// Removes all effects from a transform
         void strip_effect(Transform& t);
         /// Removes a specific effect
@@ -127,6 +131,6 @@ namespace geng {
         /// Removes all engineElements matching the IDs specified.
         void remove(const std::vector<int>& ids);
         /// Returns true if an object has an effect applied to it
-        bool has_effect(Actor& a);
+        bool has_effect(Gear *g);
     };
 }

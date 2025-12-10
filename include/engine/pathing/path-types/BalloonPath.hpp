@@ -11,7 +11,7 @@ namespace geng {
         Vertex direction;
     public:
         /// Regular constructor
-        BalloonPath(Transform* t, const Vertex &target, float speed);
+        BalloonPath(Gear* gear, const Vertex &target, float speed);
         /// Update override (true if done)
         bool update() override;
     };

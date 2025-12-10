@@ -3,6 +3,7 @@
 #include <vector>
 #include "engine/gengine-globals/EngineEnums.hpp"
 #include "engine/actors/Transform.hpp"
+#include "engine/types/Gear.hpp"
 
 namespace geng {
     /**
@@ -21,7 +22,7 @@ namespace geng {
         /// Constructs a frame from a vector of points, a duration, and an animation.
         Frame(std::vector<SDL_FPoint> points, float duration, GENG_Anim anim);
         /// Sends the vertices to the renderer for rendering. Performs all the calculations for rotation, scaling, ect.
-        void append_vertices(std::vector<SDL_Vertex>& buffer, Transform& t);
+        void append_vertices(std::vector<SDL_Vertex> &buffer, Gear *g);
 
         // Getters
         /// Returns the duration of the frame

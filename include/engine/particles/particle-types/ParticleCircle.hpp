@@ -3,7 +3,6 @@
 #include <SDL_rect.h>
 
 #include "engine/particles/ParticleGroup.hpp"
-#include "engine/utilities/types/Vertex.hpp"
 
 namespace geng {
 

@@ -1,19 +1,17 @@
-#pragma once
-
 #include "engine/pathing/path-types/BalloonPath.hpp"
 #include "engine/gengine-globals/scene.hpp"
 
 using namespace geng;
 
-BalloonPath::BalloonPath(Transform *t, const Vertex &target, float speed)
-    : Path(t, target, speed), direction((target-t->pos).unit()) {}
+BalloonPath::BalloonPath(Gear *g, const Vertex &target, float speed)
+    : Path(g, target, speed), direction((target-g->t.pos).unit()) {}
 
 bool BalloonPath::update() {
     // dereference for speed
-    Transform& t = *payload;
+    Transform& t = gear->t;
 
     float DIST = target.dist(t.pos);
-    Vertex dist = direction * global::scene.dt * speed * ((DIST < 1.0f) ? 1.0f : DIST) / 70.0f;
+    Vertex dist = direction * global::scene().dt * speed * ((DIST < 1.0f) ? 1.0f : DIST) / 70.0f;
     //minimum step of movement
     float minny = (target.dist(t.pos) * 0.02f);
     const float minStep = std::max(minny, 0.02f);

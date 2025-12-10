@@ -12,14 +12,14 @@ Background::Background(SDL_Renderer* renderer) {
         renderer,
         SDL_PIXELFORMAT_ARGB8888,
         SDL_TEXTUREACCESS_STREAMING,
-        global::scene.width,
-        global::scene.height
+        global::scene().width,
+        global::scene().height
     );
 
     // Then we resize our vector in accordance with the number of pixels we'll need.
-    rgb.resize(global::scene.width * global::scene.height * 4);
+    rgb.resize(global::scene().width * global::scene().height * 4);
     create_heightMap();
-    pixelColors = std::vector<uint8_t>(global::scene.width * global::scene.height);
+    pixelColors = std::vector<uint8_t>(global::scene().width * global::scene().height);
 
     // Then, we set up a default Palette to use.
     addPalette(defaultBackgroundPalette);
@@ -43,23 +43,23 @@ void Background::update(int dt) {
     int pitch;
 
     SDL_LockTexture(background_texture, nullptr, &pixels, &pitch);
-    if (rgb.size() != global::scene.width * global::scene.height * 4)
-        rgb.resize(global::scene.width * global::scene.height * 4);
+    if (rgb.size() != global::scene().width * global::scene().height * 4)
+        rgb.resize(global::scene().width * global::scene().height * 4);
 
     //update_pixels();
 
-    for (int y =0; y < global::scene.height; y++) {
+    for (int y =0; y < global::scene().height; y++) {
         memcpy(
             (uint8_t*)pixels + y * pitch,
-            &rgb[(y * global::scene.width) * 4],   // each pixel is 4 bytes
-            global::scene.width * 4
+            &rgb[(y * global::scene().width) * 4],   // each pixel is 4 bytes
+            global::scene().width * 4
         );
     }
 
     SDL_UnlockTexture(background_texture);
 }
 
-static uint8_t toColor(int c) {
+uint8_t toColor(int c) {
     if (c < 0) c = 0;
     else if (c > 255) c = 255;
     return c;
@@ -70,7 +70,7 @@ void Background::update_pixels() {
     uint8_t speed = palettes[paletteNum].speed;
     pixelColors[0] = 0;
 
-    if (global::scene.frame % speed == 0) {
+    if (global::scene().frame % speed == 0) {
         for (int i = 0; i < rgb.size(); i+=4) {
             // This is our switch
             if (random() % palettes[paletteNum].chaos == 0){
@@ -134,20 +134,20 @@ void Background::setPalette(int newPalette) {
 
 void Background::create_heightMap() {
     // creates a height map for dune-like structures
-    heightMap.resize(global::scene.width * global::scene.height);
+    heightMap.resize(global::scene().width * global::scene().height);
 
-    float scaley = 10.0f / global::scene.height;
-    float scalex = 20.0f / global::scene.width;
+    float scaley = 10.0f / global::scene().height;
+    float scalex = 20.0f / global::scene().width;
 
     float max = 0;
     float min = 0;
     Vertex source(1,1,1);
 
     // Now we take cross product with respect to the gradient of f
-    for (int y = 0; y < global::scene.height; y++) {
-        for (int x = 0; x < global::scene.width; x++) {
-            float sx = (x-(global::scene.width/2)) * scalex;
-            float sy = (y-(global::scene.height/2)) * scaley;
+    for (int y = 0; y < global::scene().height; y++) {
+        for (int x = 0; x < global::scene().width; x++) {
+            float sx = (x-(global::scene().width/2)) * scalex;
+            float sy = (y-(global::scene().height/2)) * scaley;
 
             //float h = 0.5*sinf(sy/4.0f - sx/2.0f) + 0.25*(sinf(sy-sx+cos(0.5f*sy-sx)))+sinf(0.2f*sx)+cosf(0.1f*sy);
 
@@ -163,7 +163,7 @@ void Background::create_heightMap() {
             if (h > max) max = h;
             else if (h < min) min = h;
             // add it to our height map
-            heightMap[y * global::scene.width + x] = h;
+            heightMap[y * global::scene().width + x] = h;
         }
     }
 

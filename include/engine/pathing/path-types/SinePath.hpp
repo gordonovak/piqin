@@ -12,7 +12,7 @@ namespace geng {
         Vertex direction;
     public:
         /// Regular constructor
-        SinePath(Transform* t, const Vertex &target, float speed);
+        SinePath(Gear* gear, const Vertex &target, float speed);
         /// Update override (true if done)
         bool update() override;
     };

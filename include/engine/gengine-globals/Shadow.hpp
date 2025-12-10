@@ -1,18 +1,18 @@
 #pragma once
 #include <SDL_render.h>
 #include <utility>
+#include <functional>
 #include <vector>
 
-#include "EngineEnums.hpp"
 #include "scene.hpp"
 
 
 namespace geng {
 
     /// Renders shadows directly onto the background
-    static void shadow_background(std::vector<SDL_Vertex>& buffer, int& numVertices);
+    void shadow_background(std::vector<SDL_Vertex>& buffer, int& numVertices);
     /// Renders shadows onto a given floor.
-    static void shadow_floor(std::vector<SDL_Vertex>& buffer, int& numVertices);
+    void shadow_floor(std::vector<SDL_Vertex>& buffer, int& numVertices);
 
     using shadowFunc = std::function<void(std::vector<SDL_Vertex>& buffer, int& numVertices)>;
 
@@ -29,11 +29,15 @@ namespace geng {
      * - @code apply_shadow(...)@endcode › Used exclusively by Actors, ParticleGroups, and Panels to render themselves
      * - @code set_floor(...)@endcode › Sets the floor for the floor rendering method
      */
-    class ShadowCalc final {
+    class ShadowCalc final  {
     private:
-        shadowFunc currentFunc = shadow_background;
+        shadowFunc currentFunc = nullptr;
         int floor = 50;
     public:
+
+        ShadowCalc() {
+            currentFunc = shadowfuncs["background"];
+        }
         std::unordered_map<std::string, shadowFunc> shadowfuncs {
             {"background", shadow_background},
             {"floor", shadow_floor}
@@ -68,34 +72,6 @@ namespace geng {
         }
     };
 
-    inline ShadowCalc shadows;
-
-    static void shadow_background(std::vector<SDL_Vertex>& buffer, int& numVertices) {
-        // First gets our size before we update with new buffer
-        int oldsize = static_cast<int>(buffer.size());
-        // Resize our vector accordingly.
-        buffer.resize(oldsize + numVertices);
-        // Now we copy the old memory to the new positions
-        // First we get the location of the new data
-        SDL_Vertex* loc = buffer.data() + oldsize;
-        // And the size of each SDL_Vertex is 24, so we have 24*numVertices bytes to copy
-        // Then we memcpy them cause it's fast
-        std::memcpy(loc, loc - numVertices, numVertices*sizeof(SDL_Vertex));
-        // Finally we update each vertex location
-        for (int i = oldsize - numVertices; i < oldsize; i++) {
-            // Store vertex in reference for easy access
-            SDL_Vertex& vert = buffer[i];
-            // Update its position
-            vert.position = {
-                vert.position.x + 0.02f*(vert.position.x - (global::scene.width*0.5f)),
-                vert.position.y + (0.02f*(vert.position.y - global::scene.height*0.25f))
-            };
-            // Update it's color
-            vert.color = {0, 0, 0, 50};
-        }
-    }
-
-    static void shadow_floor(std::vector<SDL_Vertex>& buffer, int& numVertices) {
-
-    }
+    /// Returns our shadow
+    ShadowCalc& get_shadow_calc();
 }

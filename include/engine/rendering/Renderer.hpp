@@ -63,9 +63,8 @@ namespace geng {
 		Vertex camCenter;
 
 		// Scene width and height! */
-		int canvasWidth = global::scene.width;
-		int canvasHeight = global::scene.height;
-		float scale = 1.0; 		// How much the user has scaled things
+		int canvasWidth = global::scene().width;
+		int canvasHeight = global::scene().height;
 
 		// This is the texture we draw to before scaling up.
 		SDL_Texture* canvasTex;

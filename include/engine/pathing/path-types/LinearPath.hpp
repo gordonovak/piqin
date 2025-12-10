@@ -12,7 +12,7 @@ namespace geng {
         geng::Vertex direction;
     public:
         /// Regular constructor
-        LinearPath(Transform* t, const Vertex &target, float speed);
+        LinearPath(Gear* gear, const Vertex &target, float speed);
         /// Update override (true if done)
         bool update() override;
     };

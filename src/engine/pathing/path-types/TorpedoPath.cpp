@@ -1,20 +1,18 @@
-#pragma once
-
 #include "engine/pathing/path-types/TorpedoPath.hpp"
 
 #include "engine/gengine-globals/scene.hpp"
 
 using namespace geng;
 
-TorpedoPath::TorpedoPath(Transform *t, const Vertex &target, float speed)
-    : Path(t, target, speed), direction((target-t->pos).unit()) {}
+TorpedoPath::TorpedoPath(Gear *g, const Vertex &target, float speed)
+    : Path(g, target, speed), direction((target-g->t.pos).unit()) {}
 
 bool TorpedoPath::update() {
     // Deref for speed
-    Transform& t = *payload;
+    Transform& t = gear->t;
     //calculate our unit vector
     Vertex unit = (target - t.pos).unit();
-    Vertex dist = unit * global::scene.dt * speed * (1.0f/target.dist(t.pos)) * 0.10f;
+    Vertex dist = unit * global::scene().dt * speed * (1.0f/target.dist(t.pos)) * 0.10f;
     if (dist.mag() < 0.00001f) { return true; }
     //minimum step of movement
     const float minStep = 0.0025f * target.dist(t.pos);

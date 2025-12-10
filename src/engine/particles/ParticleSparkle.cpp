@@ -17,29 +17,29 @@ Sparkle::Sparkle(const Vertex &offset, float speed, float size) {
 }
 
 bool Sparkle::update() {
-    duration -= global::scene.dt;
+    duration -= global::scene().dt;
     if (duration <= 0)
         return true;
-    pos.x += velocity.x * global::scene.dt* 0.05;
-    pos.y += velocity.y * global::scene.dt* 0.05;
+    pos.x += velocity.x * global::scene().dt* 0.05;
+    pos.y += velocity.y * global::scene().dt* 0.05;
     return false;
 }
 
-#define bpb(u, v) buffer.push_back({{u, v}, color, white})
+#define bpb(u, v) buffer.push_back({{u, v}, color, get_white()})
 void Sparkle::to_vertex(std::vector<SDL_Vertex>& buffer, SDL_Color& color) {
     int rad = static_cast<int>(radius * duration / 1500.f);
     float x = roundf(pos.x);
     float y = roundf(pos.y);
     // Used vertices
-    SDL_Vertex topleft = {{x, y-rad-1.0f},color, white };
-    SDL_Vertex bottomright = {{x+1.0f, y+rad}, color, white};
+    SDL_Vertex topleft = {{x, y-rad-1.0f},color, get_white() };
+    SDL_Vertex bottomright = {{x+1.0f, y+rad}, color, get_white()};
     // Assign our vertices
     // This is for the big top strip
     buffer.push_back(topleft);
-    buffer.push_back({{x, y+rad},color , white});
+    buffer.push_back({{x, y+rad},color , get_white()});
     buffer.push_back(bottomright);
     buffer.push_back(topleft);
-    buffer.push_back({{x+1.0f, y-rad-1.0f}, color, white});
+    buffer.push_back({{x+1.0f, y-rad-1.0f}, color, get_white()});
     buffer.push_back(bottomright);
     // This is for the two side strips
     // First side strip
@@ -67,14 +67,14 @@ ParticleSparkle::ParticleSparkle(Actor* o, float size, float speed, float durati
 
 bool ParticleSparkle::update() {
     // Check if we're done
-    duration -= global::scene.dt;
-    deltat += global::scene.dt;
+    duration -= global::scene().dt;
+    deltat += global::scene().dt;
     bool done = (duration <= 0) && !permanent;
     if (!done) {
         while (deltat > period) {
             deltat -= period;
             if (horse != nullptr) {
-                pos.z = horse->pos.z - 0.01f;
+                t.pos.z = horse->pos.z - 0.01f;
                 particles.push_back(Sparkle(horse->offset + horse->pos - Vertex(0,0,0.4), speed, strength));
             }
             else
@@ -97,11 +97,12 @@ bool ParticleSparkle::update() {
 void ParticleSparkle::to_vertex(std::vector<SDL_Vertex>& buffer) {
     int count = 0;
     if (horse != nullptr)
-        pos = horse->pos;
+        t.pos = horse->pos;
     for (auto& i : particles) {
-        i.to_vertex(buffer, color);
+        i.to_vertex(buffer, t.color);
         count += 18;
     }
-    if (shadow())
-        shadows.apply_shadow(buffer, count);
+    if (shadow()) {
+        get_shadow_calc().apply_shadow(buffer, count);
+    }
 }

@@ -3,13 +3,18 @@
 #include <emscripten/html5.h>
 #include <emscripten.h>
 
-#include "EngineSource.hpp"
-#include "engine/font/Font.hpp"
-#include "game/GameMaster.hpp"
-#include "../include/engine/animation/asset-info/HeaderRegistry.hpp"
+#include "engine/Engine.hpp"
+#include "engine/animation/asset-info/FrameTableRegistry.hpp"
+#include "engine/animation/asset-info/sheets/Asset-Card-Selector.hpp"
+#include "engine/animation/asset-info/sheets/Asset-Card-Stack.hpp"
+#include "engine/animation/asset-info/sheets/Asset-Deck.hpp"
+#include "Card.hpp"
+#include "engine/effects/effect-types/Shake.hpp"
+#include "engine/effects/effect-types/Stretch.hpp"
+#include "engine/particles/particle-types/ParticleRhombus.hpp"
+#include "engine/particles/particle-types/ParticleSparkle.hpp"
 
-// Here's our game manager!
-GameMaster* gm = nullptr;
+Card* c = new Card(55, blackjack::BJ_Suit::SPECIAL);
 
 // gameloop defined below
 EM_BOOL gameloop(double time, void* userdata) {
@@ -17,10 +22,10 @@ EM_BOOL gameloop(double time, void* userdata) {
 	// <><><><><><><><>
 	// Updates our time and grabs user input & runs events
 	// <><><><><><><><>
-	static int x = 200;
 
 	if (!bob.tick(time))
 		return EM_FALSE;
+
 
 	// <><><><><><><><>
 	// Finally we render
@@ -32,24 +37,28 @@ EM_BOOL gameloop(double time, void* userdata) {
 
 
 int main() {
+	std::cerr << "into main?\n";
+	{
+		std::cerr << "tyring to register first frame\n";
+		geng::get_TableRegistry().emplace(1, asset_draw_deck);
+		std::cerr << "added frame 1.\n";
+		geng::get_TableRegistry().emplace(2, asset_card_selector);
+		std::cerr << "added frame 2.\n";
+		geng::get_TableRegistry().emplace(0, asset_deck);
+		std::cerr << "added frameSheets.\n";
+	}
 	bob.initialize();
 
-	// GameMaster -> Handles game logic
-	gm = new GameMaster();
-	gm->initialize();									// GameMaster
-	// Now we just pray that the FrameManager piped the input properly. :o
+	bob.add_actor(c);
+	c->t.pos.y += geng::global::scene().height/2.f;
+	c->set_hoverable();
+	c->set_clickable();
+	c->set_draggable();
 
-	/************ FUCK AROUND ZONE**********/
+	bob.apply_effect(new gfx::Stretch(c, 10.f, 2.f));
 
-	gm->add_card_to_hand({7, blackjack::BJ_Suit::HEART});
-	gm->add_card_to_hand({54, blackjack::BJ_Suit::SPECIAL});
-	gm->add_card_to_hand({55, blackjack::BJ_Suit::SPECIAL});
-	gm->add_card_to_hand({56, blackjack::BJ_Suit::SPECIAL});
-	gm->add_card_to_hand({57, blackjack::BJ_Suit::SPECIAL});
-	gm->add_card_to_hand({58, blackjack::BJ_Suit::SPECIAL});
-	gm->add_card_to_hand({59, blackjack::BJ_Suit::SPECIAL});
-	gm->set_hand_as_target();
 
+	std::cerr << "dont initializing\n";
 	/******** END OF FUCK AROUND ZONE *******/
 	emscripten_request_animation_frame_loop(gameloop, nullptr);
 	emscripten_exit_with_live_runtime();

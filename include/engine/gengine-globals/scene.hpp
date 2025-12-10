@@ -8,6 +8,9 @@ namespace geng {
     private:
         double prevTime = 0.0f;
     public:
+        Scene() {
+            std::cerr << "making scene\n";
+        }
         // Game timing
         double time = 0.0f;
         uint64_t frame = 0;
@@ -17,6 +20,9 @@ namespace geng {
         // Scene width, and height
         int width = 330;
         int height = 240;
+        float scale = 1.0f;
+        int borderX = 0;
+        int borderY = 0;
 
         void update(const double game_time) {
             time = game_time;
@@ -27,7 +33,7 @@ namespace geng {
     };
 
     namespace global {
-        inline Scene scene;
+        Scene& scene();
     }
     // Fading in/out
     struct fader {

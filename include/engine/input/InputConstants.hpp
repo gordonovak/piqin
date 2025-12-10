@@ -2,9 +2,9 @@
 #include <cstdint>
 
 namespace geng {
-    inline short GENG_buffer = 400;
+    short& get_buffer();
 
-    enum class GENG_Input : uint8_t {
+    enum class Input : uint8_t {
         NONE = 0,
         UP = 1,
         DOWN = 2,

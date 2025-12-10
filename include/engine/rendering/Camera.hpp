@@ -7,8 +7,8 @@ namespace geng {
 	class Camera{
 	public:
 		Vertex pos;
-		int w = global::scene.width;
-		int h = global::scene.height;
+		int w = global::scene().width;
+		int h = global::scene().height;
 
 		// Camera constructor
 		Camera() { }

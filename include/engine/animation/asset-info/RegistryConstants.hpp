@@ -10,4 +10,4 @@
 #define ASSET_CARD_SELECTOR_ID 2
 
 #define TEX_WIDTH 492
-#define TEX_HEIGHT 240
+#define TEX_HEIGHT 280

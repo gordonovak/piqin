@@ -47,9 +47,13 @@ void Vertex::randomize(std::pair<float, float> range)  {
 		range.first = -1.f;
 		range.second = 1.f;
 	}
-	x = (global::GENG_Rand.rfloat(range.first, range.second));
-	y = (global::GENG_Rand.rfloat(range.first, range.second));
-	z = (global::GENG_Rand.rfloat(range.first, range.second));
+	x = (global::rand().rfloat(range.first, range.second));
+	y = (global::rand().rfloat(range.first, range.second));
+	z = (global::rand().rfloat(range.first, range.second));
+}
+
+Vertex Vertex::abs() {
+	return {fabsf(x), fabsf(y), fabsf(z)};
 }
 
 Vertex Vertex::operator+(Vertex other) const {

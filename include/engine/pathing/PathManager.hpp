@@ -26,10 +26,10 @@ namespace geng {
         /// Adds a path to the path manager
         void add_path(Path *p);
         /// Adds a path, targeted at the provided transform with a given offset.
-        void add_path(Path *p, Transform &t, const Vertex &offset = {0.f,0.f,0.f});
+        void add_path(Path *p, Gear* g, const Vertex &offset = {0.f,0.f,0.f});
 
         /// Removes a path from the given transform
-        void remove_path(const Transform &t);
+        void remove_path(const Gear* g);
         /// Removes a path with the given path pointer (not recommended to use because not O(1))
         void remove_path(const Path *path);
 

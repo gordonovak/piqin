@@ -47,25 +47,27 @@ namespace geng {
         [[nodiscard]] bool is_zero() const;
         /// Randomizes the values in a vertex. Specify a range from low to high. If no range is specified, randomness will be from -1 to 1.
         void randomize(std::pair<float, float> range = std::make_pair(0, 0));
+        /// Gets the absolute value of this vertex
+        Vertex abs();
 
         // Operator overloads for Vertexes
         // Operations with other Vertexes
-        Vertex operator+(Vertex other) const;
-        Vertex operator-(Vertex other) const;
-        Vertex operator*(float scalar) const;
-        Vertex operator/(float scalar) const;
-        Vertex operator%(int scalar) const;
+        Vertex operator+(Vertex other) const;   /// Adds coordinates of two Vertices together
+        Vertex operator-(Vertex other) const;   /// Subtracts coordinates of two vectors
+        Vertex operator*(float scalar) const;   /// Multiplication of all coordinates
+        Vertex operator/(float scalar) const;   /// Division via scalar of Vertex
+        Vertex operator%(int scalar) const;     /// Mod each element of the Vertex by the scalar (turn to int)
         // Self operations
-        void operator+=(Vertex other);
-        void operator-=(Vertex other);
-        void operator*=(float scalar);
-        void operator%=(int scalar);
+        void operator+=(Vertex other);  /// Addition + assignment
+        void operator-=(Vertex other);  /// Subtraction + assignment
+        void operator*=(float scalar);  /// Scalar multiplication + assignment
+        void operator/=(float scalar);  /// Divison + assignment -> turn to 0 if dividing by 0.
+        void operator%=(int scalar);    /// Modulus + assignment
 
-        float operator*(Vertex other);
+        float operator*(Vertex other);  /// Dot product of two Vertexes
 
-        void operator/=(float scalar);
-        float& operator[](int index);
-        void operator=(Vertex other); // NOLINT(*-unconventional-assign-operator)
+        float& operator[](int index);   /// Element wise access: [0]: x, [1]: y, [2]: z, [else]: x + error.
+        void operator=(Vertex other); /// Copy constructor but with = sign. // NOLINT(*-unconventional-assign-operator)
 
         // To string methods below
         /// Add a vertex to a string

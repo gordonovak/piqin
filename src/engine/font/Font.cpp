@@ -4,11 +4,12 @@
 
 #include "engine/animation/asset-info/TextureRegister.hpp"
 
+
 using namespace geng;
 
 
 Font::Font(std::string path, std::unordered_map<char, geng::Quad> quads,int tex_width, int tex_height, short spacing, short offset_x, short offset_y) : spacing(spacing){
-    texture_id = tex_register.register_texture(path);
+    texture_id = get_tex_register().register_texture(path);
 
     for (auto& [c, q] : quads) {
         q.x += offset_x;

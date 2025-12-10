@@ -8,7 +8,8 @@ namespace geng {
     private:
         std::deque<std::pair<float, std::function<void()>>> callbacks;
     public:
-        EventTimer() = default;
+        EventTimer() {
+        }
 
         void add_event(float time, const std::function<void()> callback) {
             callbacks.emplace_back(time, callback);
@@ -16,7 +17,7 @@ namespace geng {
 
         void update() {
             if (!callbacks.empty()) {
-                callbacks.front().first -= global::scene.dt;
+                callbacks.front().first -= global::scene().dt;
                 if (callbacks.front().first <= 0) {
                     const auto f = callbacks.front().second;
                     callbacks.pop_front();
@@ -26,5 +27,5 @@ namespace geng {
         }
     };
 
-    inline EventTimer GENG_Events;
+    EventTimer& events();
 }

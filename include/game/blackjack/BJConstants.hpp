@@ -10,14 +10,14 @@
 
 // Default positions
 // CardDraws
-#define BJ_DEFAULT_PLAYER_POS geng::Vertex(3.3*geng::global::scene.width/8, 5*geng::global::scene.height/8.0, DRAW_Z_BASE)
-#define BJ_DEFAULT_OPPONENT_POS geng::Vertex(3.3*geng::global::scene.width/8, 2*geng::global::scene.height/8.0, DRAW_Z_BASE)
+#define BJ_DEFAULT_PLAYER_POS geng::Vertex(3.3*geng::global::scene().width/8, 5*geng::global::scene().height/8.0, DRAW_Z_BASE)
+#define BJ_DEFAULT_OPPONENT_POS geng::Vertex(3.3*geng::global::scene().width/8, 2*geng::global::scene().height/8.0, DRAW_Z_BASE)
 // Floater card
-#define BJ_DEFAULT_FLOATER_POS geng::Vertex(geng::global::scene.width/8.0f, 1.5*geng::global::scene.height/3.0f, DECK_Z_BASE)
-#define BJ_DEFAULT_DISCARD_POS geng::Vertex(7*geng::global::scene.width/8.0f, 4*geng::global::scene.height/6.0f, HAND_Z_BASE)
+#define BJ_DEFAULT_FLOATER_POS geng::Vertex(geng::global::scene().width/8.0f, 1.5*geng::global::scene().height/3.0f, DECK_Z_BASE)
+#define BJ_DEFAULT_DISCARD_POS geng::Vertex(7*geng::global::scene().width/8.0f, 4*geng::global::scene().height/6.0f, HAND_Z_BASE)
 // Deck & discard
-#define BJ_DEFAULT_DECK_POS geng::Vertex(7*geng::global::scene.width/8.0f, 2.3*geng::global::scene.height/8, DECK_Z_BASE)
-#define BJ_DEFAULT_SELECTOR_POS geng::Vertex(geng::global::scene.width/2.0f, 1.8f*geng::global::scene.height/2.0f, SELECTOR_Z_BASE)
+#define BJ_DEFAULT_DECK_POS geng::Vertex(7*geng::global::scene().width/8.0f, 2.3*geng::global::scene().height/8, DECK_Z_BASE)
+#define BJ_DEFAULT_SELECTOR_POS geng::Vertex(geng::global::scene().width/2.0f, 1.8f*geng::global::scene().height/2.0f, SELECTOR_Z_BASE)
 
 // Selection offset
 #define BJ_SELECT_OFFSET geng::Vertex(0, 5, 0)

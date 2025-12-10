@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
 #include <SDL_render.h>
 #include <string>
 #include <unordered_map>
+
 
 namespace geng {
     /** @brief The TextureRegister links asset paths to GPU textures via two unordered maps. Each unique file path is assigned an ID, and each ID links to one texture.
@@ -33,5 +35,6 @@ namespace geng {
         SDL_Texture* get_texture(int index);
     };
 
-    inline TextureRegister tex_register;
+    TextureRegister& get_tex_register();
+
 }

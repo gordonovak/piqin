@@ -12,7 +12,7 @@ namespace geng {
         Vertex direction;
     public:
         /// Regular constructor
-        TorpedoPath(Transform* t, const Vertex &target, float speed);
+        TorpedoPath(Gear* gear, const Vertex &target, float speed);
         /// Update override (true if done)
         bool update() override;
     };

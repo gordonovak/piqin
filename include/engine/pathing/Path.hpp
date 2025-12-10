@@ -1,7 +1,7 @@
 #pragma once
 #include "engine/actors/Transform.hpp"
-#include "engine/types/Vertex.hpp"
 #include "engine/gengine-globals/scene.hpp"
+#include "engine/types/Gear.hpp"
 
 namespace geng {
 
@@ -22,7 +22,7 @@ namespace geng {
      */
     class Path {
     protected:
-        Transform* payload;
+        Gear* gear;
         Vertex target;
         Vertex start;
         float speed;
@@ -45,21 +45,19 @@ namespace geng {
 
     public:
         /// Constructor for a path.
-        Path(Transform* editedTransform, const Vertex &destination, float speed)
-            : payload(editedTransform), start(editedTransform->pos), target(destination), speed(speed) {}
+        Path(Gear* gear, const Vertex &destination, float speed)
+            : gear(gear), start(gear->t.pos), target(destination), speed(speed) {}
         /// Destructor is default
         virtual ~Path() = default;
 
-        /// Updates the payload according to the subclass' definition
+        /// Updates the gear according to the subclass' definition
         virtual bool update() = 0;
         /// Returns the target vertex
         [[nodiscard]] Vertex get_target() const { return target; }
-        /// Returns the ID of the payload
-        [[nodiscard]] int get_transform_ID() const { return payload->id; };
-        /// Returns the payload
-        [[nodiscard]] Transform* get_payload() const { return payload; }
+        /// Returns the gear
+        [[nodiscard]] Gear* get_payload() const { return gear; }
         /// Updates the target of the path
-        void set_target(Vertex v) { target = v; start = payload->pos; }
+        void set_target(Vertex v) { target = v; start = gear->t.pos; }
         /// Sets the callback function, which is called upon path completion
         void set_callback(std::function<void()>* cb) { callback = cb; }
         /// Returns a string with path information.

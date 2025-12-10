@@ -1,10 +1,11 @@
 #pragma once
 
 #include "engine/actors/Transform.hpp"
+#include "engine/types/Gear.hpp"
 
 namespace geng {
     /**
-  * @brief Effects attach themselves to Transform objects, so any type with a Transform can have an effect applied to it.
+  * @brief Effects attach themselves to Gear objects, so any Gear can have an effect applied to it, although it may not have any visible effect. Primary candidates for effects are @code geng::Panels@endcode and @code geng::Actors@endcode.
   * @details To create a new effect, make a subclass of the effect object and add it via the Engine.
   * Effects have six member variables:
   * 1. Transform* t -> pointer to the object's Transform [protected]
@@ -26,7 +27,7 @@ namespace geng {
     class Effect {
     protected:
         /// Transform object the effect is applied to
-        Transform* t = nullptr;
+        Gear* gear = nullptr;
         /// Initial duration of the effect.
         float initDuration;
         /// Current duration of the effect.
@@ -49,14 +50,14 @@ namespace geng {
         explicit Effect(float duration, float amplitude)
             : initDuration(duration), duration(duration), amplitude(amplitude), permanent(duration == -1) {}
         /// Constructor for Permanent Effect
-        explicit Effect(Transform& t)
-            : t(&t), initDuration(0), duration(0), permanent(true) {}
+        explicit Effect(Gear* t)
+            : gear(t), initDuration(0), duration(0), permanent(true) {}
         /// Constructor for duration-bound effect
-        Effect(Transform& t, float duration)
-            : t(&t), initDuration(duration), duration(initDuration), permanent(duration == -1) {}
+        Effect(Gear* t, float duration)
+            : gear(t), initDuration(duration), duration(initDuration), permanent(duration == -1) {}
         /// Constructor for a duration and an amplitude
-        Effect(Transform& t, float duration, float amplitude)
-            : t(&t), initDuration(duration), duration(duration),
+        Effect(Gear* t, float duration, float amplitude)
+            : gear(t), initDuration(duration), duration(duration),
                     amplitude(amplitude), permanent(duration == -1) {}
 
         /// Virtual destructor cause i'm considerate like that
@@ -66,20 +67,20 @@ namespace geng {
         /// Immmediately ends an effect
         virtual void end() { duration = 0; permanent = false;};
 
-
         // ............... //
         // For use by the engine //
         // ............... //
         /// Sets the transform the effect targets.
-        void set_transform(Transform& transform) { t = &transform; }
+        void set_gear(Gear* g) { gear = g; }
         /// Sets the ID of the effect
         void set_id(int i) { id = i; }
         /// Gets the ID of the effect
-        [[nodiscard]] int get_id () const { return id; }
-        /// Gets the target_id of the transform the effect is applied to
-        [[nodiscard]] int get_target_id () const { return (t == nullptr) ? 0 : t->id; }
+        int get_id () const { return id; }
+        /// Gets the id of the associated Gear
+        int get_gear_id() const { return gear->id; }
+        /// Gets the associated gear pointer
+        Gear* get_gear_ptr() const { return gear; }
         /// Returns if the effect is permanent or not
-        [[nodiscard]] bool is_permanent () const { return permanent; }
-
+        bool is_permanent () const { return permanent; }
     };
 }

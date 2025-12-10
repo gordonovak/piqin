@@ -17,11 +17,11 @@ Rhombus::Rhombus(const Vertex &offset, float speed, float size) {
 }
 
 bool Rhombus::update() {
-    duration -= global::scene.dt;
+    duration -= global::scene().dt;
     if (duration <= 0)
         return true;
-    pos.x += velocity.x * global::scene.dt* 0.05;
-    pos.y += velocity.y * global::scene.dt* 0.05;
+    pos.x += velocity.x * global::scene().dt* 0.05;
+    pos.y += velocity.y * global::scene().dt* 0.05;
     return false;
 }
 
@@ -29,10 +29,10 @@ void Rhombus::to_vertex(std::vector<SDL_Vertex>& buffer, SDL_Color& color) const
     // Radius
     int rad = static_cast<int>(radius * duration / 1500.f);
     // Vertex locations
-    SDL_Vertex top = {{pos.x, pos.y - rad}, color, white};
-    SDL_Vertex bottom = {{pos.x, pos.y + rad},  color, white};
-    SDL_Vertex left = {{pos.x - rad, pos.y}, color, white, };
-    SDL_Vertex right = {{pos.x + rad, pos.y}, color, white};
+    SDL_Vertex top = {{pos.x, pos.y - rad}, color, get_white()};
+    SDL_Vertex bottom = {{pos.x, pos.y + rad},  color, get_white()};
+    SDL_Vertex left = {{pos.x - rad, pos.y}, color, get_white(), };
+    SDL_Vertex right = {{pos.x + rad, pos.y}, color, get_white()};
     // Send to buffer
     buffer.push_back(top);
     buffer.push_back(left);
@@ -44,7 +44,7 @@ void Rhombus::to_vertex(std::vector<SDL_Vertex>& buffer, SDL_Color& color) const
 
 // ParticleRhombus constructors
 ParticleRhombus::ParticleRhombus(Vertex pos, float size, float speed, float duration, float frequency, SDL_Color Tint)
-    : ParticleGroup(pos, size, speed, duration, {255, 255, 255, 255}), period(frequency) {
+    : ParticleGroup(pos, size, speed, duration, Tint), period(frequency) {
     shadow_color = Tint;
     if (duration == -1)
         permanent = true;
@@ -52,23 +52,23 @@ ParticleRhombus::ParticleRhombus(Vertex pos, float size, float speed, float dura
 }
 
 ParticleRhombus::ParticleRhombus(Actor* o, float size, float speed, float duration, float period, SDL_Color Tint)
-    : ParticleGroup(o, size, speed, duration, {255, 255, 255, 255}), period(period) {
+    : ParticleGroup(o, size, speed, duration, Tint), period(period) {
     shadow_color = Tint;
     if (duration == -1)
         permanent = true;
-    pos.z = pos.z - 1.f;
+    t.pos.z = t.pos.z - 1.f;
 }
 
 bool ParticleRhombus::update() {
     // Check if we're done
 
-    duration -= global::scene.dt;
-    deltat += global::scene.dt;
+    duration -= global::scene().dt;
+    deltat += global::scene().dt;
     bool done = (duration <= 0) && !permanent;
     if (deltat > period && !done) {
         deltat -= period;
         if (horse != nullptr) {
-            pos.z = horse->pos.z - 1.f;
+            t.pos.z = horse->pos.z - 1.f;
             particles.emplace_back(horse->offset + horse->pos - Vertex(0,0,1), speed, strength);
         }
         else
@@ -90,11 +90,11 @@ bool ParticleRhombus::update() {
 void ParticleRhombus::to_vertex(std::vector<SDL_Vertex>& buffer) {
     int count = 0;
     if (horse != nullptr)
-        pos = horse->pos;
+        t.pos = horse->pos;
     for (auto& i : particles) {
-        i.to_vertex(buffer, color);
+        i.to_vertex(buffer, t.color);
         count+=6;
     }
     if (shadow())
-        shadows.apply_shadow(buffer, count);
+        get_shadow_calc().apply_shadow(buffer, count);
 }

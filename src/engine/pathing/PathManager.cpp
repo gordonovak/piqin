@@ -11,18 +11,18 @@ void PathManager::add_path(Path *p) {
 
 }
 
-void PathManager::add_path(Path* p, Transform& t, const Vertex &offset) {
-    p->set_target(t.pos + offset);
-    if (paths.find(t.id) != paths.end()) {
-        p->set_target(paths[t.id]->get_target() + offset);
+void PathManager::add_path(Path* p, Gear* g, const Vertex &offset) {
+    p->set_target(g->t.pos + offset);
+    if (paths.find(g->id) != paths.end()) {
+        p->set_target(paths[g->id]->get_target() + offset);
     }
     add_path(p);
 }
 
-void PathManager::remove_path(const Transform &t) {
-    if (paths.find(t.id) != paths.end()) {
-        delete paths[t.id];
-        paths.erase(t.id);
+void PathManager::remove_path(const Gear* g) {
+    if (paths.find(g->id) != paths.end()) {
+        delete paths[g->id];
+        paths.erase(g->id);
     }
 }
 
@@ -41,7 +41,7 @@ void PathManager::update() {
         // If it's not null and the update says it's done.
         if (p->update()) {
             // Guarentees we hit the target at the end
-            p->get_payload()->pos = p->get_target();
+            p->get_payload()->t.pos = p->get_target();
             // Then we destroy the path.
             delete p;
             paths.erase(id);

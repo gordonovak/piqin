@@ -9,7 +9,8 @@
 
 namespace geng {
     // This is a white point on our texture
-    inline SDL_FPoint white = {4.f/TEX_WIDTH, 4.f/TEX_HEIGHT};
+    SDL_FPoint& get_white();
+
     /**
      * @brief ParticleGroup is an abstract base class which defines base behavior for particle effects.
      * @details If you want particles to display, they must inherit from ParticleGroup and be added
@@ -37,33 +38,29 @@ namespace geng {
         float strength = 1.0f;
         float speed = 1.0f;
         bool permanent = false;
-        SDL_Color color = {255, 255, 255, 255};
         SDL_Color shadow_color = {0, 0, 0, 30};
 
     public:
-        Vertex pos = Vertex(0,0,0);
-        // position of the group
-
         // If they're attatched to an object, they ride it like a horse
         Transform* horse = nullptr;
 
         ParticleGroup(const Vertex pos, const float strength, const float speed, const float duration, const SDL_Color color) :
-                pos(pos), duration(duration), strength(strength), speed(speed), color(color) { if (duration == -1) permanent = true; }
-        ParticleGroup(Actor* o, const float strength, const float speed, const float duration, const SDL_Color color)
-            : strength(strength), speed(speed), color(color), pos(o->t.pos), horse(&o->t), duration(duration) { this->pos = o->t.pos; this->pos.z = pos.z - 1.0f; if (duration == -1) permanent = true;}
+                Gear(pos), duration(duration), strength(strength), speed(speed) { if (duration == -1) permanent = true; t.color = color; }
+        ParticleGroup(Actor* a, const float strength, const float speed, const float duration, const SDL_Color color)
+            : strength(strength), speed(speed), Gear(a->t.pos), horse(&a->t), duration(duration) { t.pos.z = a->t.pos.z - 1.0f; t.color = color; if (duration == -1) permanent = true;}
 
         // Lets us update our particles. Should return true if done rendering.
         virtual bool update() = 0;  // pure virtual
         // Returns the rendering vertices for our particle. MUST RETURN THE NUMBER OF VERTICES
-        virtual void to_vertex(std::vector<SDL_Vertex>& buffer) = 0;
+        void to_vertex(std::vector<SDL_Vertex>& buffer) override = 0;
         // Returns the z-index
-        [[nodiscard]] float z_index() const override { return pos.z; }
+        [[nodiscard]] float z_index() const override { return t.pos.z; }
         // Destructor
         virtual ~ParticleGroup() = default;
         // Gets the z index
-        [[nodiscard]] float get_z() const { return pos.z;}
+        [[nodiscard]] float get_z() const { return t.pos.z;}
         // Gets the color
-        SDL_Color& get_color() { return color; }
+        SDL_Color& get_color() { return t.color; }
         SDL_Color& get_shadow_color() { return shadow_color; }
         // Ends a particlegroup's generation
         void end() { duration = 0; permanent = false; }

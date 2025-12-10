@@ -20,15 +20,13 @@ namespace geng {
 
         // Add effects
         /// Adds an effect to a given actor
-        void add_effect(Actor& o, Effect* e);
+        void add_effect(Effect *e);
         /// Adds an effect to a given transform
-        void add_effect(Transform& t, Effect* e);
+        void add_effect(Gear &g, Effect *e);
 
         // Remove effects
-        /// Removes all effects on an actor (by searching through target_id)
-        void remove_effect(Actor& a);
-        /// Removes all effects on a transform
-        void remove_effect(Transform& t);
+        /// Removes all effects on an gear (by searching through target_id)
+        void remove_effect(Gear *g);
         /// Removes a singular effect by Effect*
         void remove_effect(Effect* e);
 
@@ -36,8 +34,8 @@ namespace geng {
         /// Updates all effects in the effect manager. Removes finished effects.
         void update();
 
-        /// Check if a transform has an effect
-        bool has_effect(Transform& t);
+        /// Check if a gear has an effect
+        bool has_effect(Gear* g);
 
     };
 }

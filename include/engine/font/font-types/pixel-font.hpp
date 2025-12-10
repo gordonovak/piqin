@@ -7,7 +7,7 @@
 #include "engine/font/Font.hpp"
 #include "engine/types/Quad.hpp"
 
-static const geng::Font default_pixel_font = {
+const geng::Font default_pixel_font = {
     "assets/full-texture.ktx2",
     {
     {'a', {0, 0, 4, 9}}, // 'a'
@@ -43,4 +43,4 @@ static const geng::Font default_pixel_font = {
     0, 240
 };
 
-static geng::FontRegister pixel_font_register(0, default_pixel_font);
+//inline geng::FontRegister pixel_font_register(0, default_pixel_font);

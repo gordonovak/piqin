@@ -21,6 +21,6 @@ namespace geng {
         }
     };
     namespace global {
-        inline Random GENG_Rand;
+        Random& rand();
     }
 }
